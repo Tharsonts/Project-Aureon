@@ -1,1 +1,121 @@
-(...)
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>DISTRAX - Mini Games de Aureon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: url('https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif') repeat;
+      opacity: 0.15;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      margin-top: 10vh;
+    }
+
+    .glitch-title span {
+      display: inline-block;
+      animation: flicker 2s infinite;
+      font-size: 90px;
+      color: #fff;
+      text-shadow: 1px 1px 0 #ccc,
+                   2px 2px 0 #bbb,
+                   3px 3px 0 #aaa,
+                   4px 4px 0 #999,
+                   5px 5px 0 #888;
+    }
+
+    .glitch-title span:nth-child(2n) {
+      animation-delay: 0.2s;
+    }
+
+    .glitch-title span:nth-child(3n) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+      }
+      20%, 22%, 24%, 55% {
+        opacity: 0.3;
+      }
+    }
+
+    .typed-text {
+      font-size: 20px;
+      height: 30px;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid white;
+      width: 0;
+      animation: typing 4s steps(40, end) forwards, blink 0.75s step-end infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 320px }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    .buttons {
+      margin-top: 60px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .game-button {
+      background-color: #222;
+      border: 2px solid #555;
+      padding: 20px 40px;
+      font-size: 18px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .game-button:hover {
+      background-color: #444;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="glitch-title">
+      <span>D</span><span>I</span><span>S</span><span>T</span><span>R</span><span>A</span><span>X</span>
+    </h1>
+    <div class="typed-text">Mini games para fugir da realidade de Aureon</div>
+    <div class="buttons">
+      <div class="game-button">EXTINÇÃO TOTAL</div>
+      <div class="game-button">FUGA ESTELAR</div>
+    </div>
+  </div>
+</body>
+</html>
