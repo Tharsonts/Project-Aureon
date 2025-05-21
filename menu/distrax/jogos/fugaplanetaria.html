@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<title>Cenário Extinção Total – Defesa Planetária Avançada</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap');
+  * {
+    box-sizing: border-box;
+  }
+  html, body {
+    margin:0; padding:0; height: 100%;
+    background: radial-gradient(ellipse at center, #330000 0%, #110000 90%);
+    color: #ffcccc;
+    font-family: 'Courier Prime', monospace;
+    overflow: hidden;
+    user-select: none;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #app {
+    position: relative;
+    width: 100vw;
+    max-width: 1024px;
+    height: 100vh;
+    padding: 20px;
+    border: 3px solid #ff4f4f;
+    box-shadow: 0 0 80px 20px #ff4f4f;
+    display: flex;
+    flex-direction: column;
+    background: #1a0000;
+  }
+  h1 {
+    margin: 0 0 8px;
+    font-size: 2.5rem;
+    text-align: center;
+    letter-spacing: 4px;
+    color: #ff4f4f;
+    text-shadow:
+      0 0 12px #ff4f4f,
+      0 0 25px #ff0000;
+    user-select: none;
+  }
+  #countdown {
+    font-size: 5rem;
+    font-weight: 900;
+    color: #ff4f4f;
+    text-align: center;
+    letter-spacing: 14px;
+    margin-bottom: 24px;
+    user-select: none;
+    text-shadow:
+      0 0 25px #ff4f4f,
+      0 0 50px #ff0000;
+  }
+  #game-container {
+    flex: 1;
+    position: relative;
+    background: #330000;
+    border: 4px solid #ff4f4f;
+    border-radius: 14px;
+    box-shadow: inset 0 0 50px #ff4f4f;
+    overflow: hidden;
+  }
+  canvas#game-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    background:
+      radial-gradient(circle at center, #440000 0%, #220000 70%),
+      repeating-radial-gradient(circle, transparent 0 15px, rgba(255,79,79,.07) 15px 20px);
+    filter: drop-shadow(0 0 20px #ff4f4f);
+  }
+  #info-bar {
+    text-align: center;
+    margin-top: 16px;
+    color: #ff9090;
+    font-weight: 900;
+    font-size: 1.3rem;
+    letter-spacing: 3px;
+    user-select: none;
+    text-shadow: 0 0 10px #ff4f4f;
+  }
+  #impact-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vmin;
+    max-width: 1000px;
+    max-height: 1000px;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    transform: translate(-50%, -50%) scale(0.6);
+    transition: opacity 3s ease, transform 3s ease;
+    mix-blend-mode: screen;
+    filter: drop-shadow(0 0 30px #ff4f4f);
+    z-index: 12;
+  }
+  /* Tremor and blink effect in last 20 seconds */
+  .tremor {
+    animation: tremor 0.08s infinite;
+  }
+  @keyframes tremor {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-4px, 4px) rotate(-1deg); }
+    40% { transform: translate(-4px, -4px) rotate(1deg); }
+    60% { transform: translate(4px, 4px) rotate(-1deg); }
+    80% { transform: translate(4px, -4px) rotate(1deg); }
+  }
+  .blink-red {
+    animation: blinkRedBg 1s infinite alternate;
+  }
+  @keyframes blinkRedBg {
+    0% { background-color: #1a0000; }
+    100% { background-color: #ff4f4f; }
+  }
+  #control-panel {
+    margin-top: 24px;
+    text-align: center;
+    user-select: none;
+  }
+  button#start-btn {
+    background: #ff4f4f;
+    border: none;
+    color: #1a0000;
+    font-weight: 900;
+    font-size: 1.5rem;
+    padding: 14px 48px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 20px #ff4f4f, inset 0 0 35px #ffcccc;
+    transition: background-color 0.3s ease;
+  }
+  button#start-btn:hover {
+    background: #ffbaba;
+    color: #330000;
+  }
+  button#start-btn:active {
+    transform: scale(0.96);
+  }
+  /* Player */
+  .player-engine-flame {
+    position: absolute;
+    width: 18px;
+    height: 34px;
+    background: radial-gradient(circle, #ff4f4f 40%, transparent 90%);
+    filter: blur(3px);
+    bottom: 0;
+    border-radius: 10px / 20px;
+    animation: flameFlicker 0.15s infinite;
+  }
+  @keyframes flameFlicker {
+    0%, 100% { opacity: 0.9; transform: scaleY(1) scaleX(1);}
+    50% {opacity: 0.5; transform: scaleY(1.5) scaleX(0.8);}
+  }
+</style>
+</head>
+<body>
+  <div id="app" role="main" aria-label="Terminal de protocolo de emergência global">
+    <h1>PROTOCOLO DE EMERGÊNCIA GLOBAL</h1>
+    <div id="countdown" aria-live="polite" aria-atomic="true" aria-label="Contador regressivo de impacto" tabindex="0">01:00</div>
+    <div id="game-container" aria-label="Painel do jogo de defesa planetária">
+      <canvas id="game-canvas" width="1024" height="576" aria-label="Área do jogo"></canvas>
+      <img id="impact-image" src="https://i.imgur.com/Emv2T6w.png" alt="Explosão cósmica final" />
+    </div>
+    <div id="info-bar" aria-live="polite" aria-atomic="true">
+<img id="arrival-planet" src="https://i.imgur.com/z4F2Kk0.png" alt="Planeta destino" style="position: absolute; right: -300px; top: 30%; width: 180px; opacity: 0; transition: all 3s ease;" />
+<img id="arrival-ship" src="https://i.imgur.com/UehqzXM.png" alt="Nave final" style="position: absolute; left: 50px; top: 70%; width: 80px; opacity: 0; transition: all 3s ease;" />
+<div id="typed-message" style="position: absolute; top: 20%; left: 50%; transform: translateX(-50%); font-size: 1.8rem; font-family: monospace; color: #90ff90; text-shadow: 0 0 10px #00ff00; opacity: 0;"></div>
+
+    <div id="control-panel">
+      <button id="start-btn" style="display: inline-block;" aria-label="Iniciar Defesa Planetária">INICIAR DEFESA PLANETÁRIA</button>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const countdownEl = document.getElementById('countdown');
+  const startBtn = document.getElementById('start-btn');
+  const canvas = document.getElementById('game-canvas');
+  const ctx = canvas.getContext('2d');
+  const infoBar = document.getElementById('info-bar');
+  const impactImage = document.getElementById('impact-image');
+  const appDiv = document.getElementById('app');
+
+  const W = canvas.width;
+  const H = canvas.height;
+
+  let countdownTime = 60;
+  let countdownInterval = null;
+
+  let gameRunning = false;
+
+  // Player spaceship
+  const player = {
+    x: W/2,
+    y: H - 100,
+    width: 28,
+    height: 42,
+    speed: 6.5,
+    cooldown: 0,
+    lives: 3,
+  };
+
+  // Controls
+  const keysPressed = {};
+
+  // Missiles
+  let missiles = [];
+
+  // Asteroids
+  let asteroids = [];
+
+  // Score
+  let score = 0;
+    let hitCount = 0;
+    
+
+  // Particle effects for explosions and flame
+  const particles = [];
+
+  // Audio context and sounds
+  let audioCtx = null;
+
+  function initAudio(){
+    if(audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  function playShootSound() {
+    if(!audioCtx) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime+0.12);
+    osc.stop(audioCtx.currentTime+0.12);
+  }
+
+  function playExplosionSound() {
+    if(!audioCtx) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(130, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
+    osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.8);
+    osc.stop(audioCtx.currentTime + 0.8);
+  }
+
+  // Classes
+  class Missile {
+    constructor(x,y){
+      this.x = x;
+      this.y = y;
+      this.w = 6;
+      this.h = 18;
+      this.speed = 13;
+      this.active = true;
+      this.trail = [];
+    }
+    update(){
+      this.y -= this.speed;
+      this.trail.push({x:this.x,y:this.y});
+      if(this.trail.length > 10) this.trail.shift();
+      if(this.y < -this.h) this.active = false;
+    }
+    draw(ctx) {
+      // Draw trail with fading
+      ctx.save();
+      ctx.lineWidth = 3;
+      for(let i=0;i<this.trail.length;i++){
+        const p = this.trail[i];
+        const alpha = i/this.trail.length;
+        ctx.strokeStyle = `rgba(255,79,79,${alpha})`;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        if(i>0){
+          ctx.lineTo(this.trail[i-1].x, this.trail[i-1].y);
+        } else {
+          ctx.lineTo(p.x, p.y+5);
+        }
+        ctx.stroke();
+      }
+      // Draw missile body
+      ctx.fillStyle = '#ffb1b1';
+      ctx.strokeStyle = '#ff4f4f';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.rect(this.x - this.w/2, this.y - this.h, this.w, this.h);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  class Asteroid {
+    constructor(x,y,vx,vy,size){
+      this.x = x;
+      this.y = y;
+      this.vx = vx;
+      this.vy = vy;
+      this.size = size;
+      this.live = true;
+      this.rotation = Math.random()*Math.PI*2;
+      this.rotSpeed = (Math.random()-.5)*0.015;
+      this.vertices = [];
+      this.vertexCount = 7 + Math.floor(Math.random()*4);
+      for(let i=0;i<this.vertexCount;i++){
+        this.vertices.push(0.6 + Math.random()*0.9);
+      }
+    }
+    update(){
+      this.x += this.vx;
+      this.y += this.vy;
+      this.rotation += this.rotSpeed;
+      if(this.y - this.size > H + 100) this.live = false;
+      if(this.x + this.size < -100) this.live = false;
+      if(this.x - this.size > W + 100) this.live = false;
+    }
+    draw(ctx){
+      ctx.save();
+      ctx.translate(this.x,this.y);
+      ctx.rotate(this.rotation);
+      ctx.fillStyle = '#660000';
+      ctx.strokeStyle = '#ff4f4f';
+      ctx.lineWidth = 3;
+      ctx.shadowColor = '#ff4f4f';
+      ctx.shadowBlur = 15;
+      ctx.beginPath();
+      for(let i=0;i<this.vertexCount;i++){
+        let angle = (i * 2 * Math.PI) / this.vertexCount;
+        let r = this.size * this.vertices[i];
+        let x = Math.cos(angle) * r;
+        let y = Math.sin(angle) * r;
+        if(i===0) ctx.moveTo(x,y);
+        else ctx.lineTo(x,y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+    collidesWith(missile){
+      const dx = this.x - missile.x;
+      const dy = this.y - missile.y;
+      const distance = Math.sqrt(dx*dx + dy*dy);
+      return distance < this.size + missile.h/2;
+    }
+    collidesWithPlayer(player){
+      // Approximate player as triangle
+      // Use simple distance to center as heuristic
+      const dx = this.x - player.x;
+      const dy = this.y - (player.y + player.height/2);
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      return dist < this.size + player.width/3;
+    }
+  }
+
+  class Particle {
+    constructor(x,y,vx,vy,size,life,color) {
+      this.x = x;
+      this.y = y;
+      this.vx = vx;
+      this.vy = vy;
+      this.size = size;
+      this.life = life;
+      this.maxLife = life;
+      this.color = color;
+    }
+    update(){
+      this.x += this.vx;
+      this.y += this.vy;
+      this.life--;
+    }
+    draw(ctx){
+      ctx.save();
+      ctx.globalAlpha = Math.max(this.life/this.maxLife,0);
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  // Variables to manage game state
+  let gameLoopId = null;
+  let spawnInterval = null;
+  let gameTime = 60;  // game ends when timer ends or player dies
+  let gameTimerId = null;
+
+  // Utility functions
+  function randomRange(min,max){ return Math.random()*(max-min)+min; }
+  function clamp(v,min,max){ return Math.min(max, Math.max(min,v)); }
+
+  // Draw player with advanced flame flicker
+  function drawPlayer(){
+    ctx.save();
+    ctx.translate(player.x, player.y);
+    // Draw ship body
+    ctx.fillStyle = '#ff4f4f';
+    ctx.strokeStyle = '#ff9f9f';
+    ctx.lineWidth = 3;
+
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-player.width/2, player.height);
+    ctx.lineTo(player.width/2, player.height);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // Cockpit highlight
+    ctx.fillStyle = '#ffbfbf';
+    ctx.beginPath();
+    ctx.ellipse(0, player.height*0.5, player.width*0.22, player.height*0.3, 0, 0, Math.PI*2);
+    ctx.fill();
+
+    // Flames with multiple flicker circles
+    const flameBaseY = player.height + 8;
+    for(let i=0; i<3; i++){
+      ctx.beginPath();
+      const flickerSize = randomRange(6,12);
+      const flickerX = randomRange(-player.width/6, player.width/6);
+      const flickerY = flameBaseY + randomRange(-4,4);
+      ctx.fillStyle = `rgba(255,${100+randomRange(50,155)},${randomRange(50,150)},${randomRange(0.3,0.7)})`;
+      ctx.shadowColor = 'rgba(255,95,95,0.9)';
+      ctx.shadowBlur = 15;
+      ctx.ellipse(flickerX, flickerY, flickerSize*0.4, flickerSize, 0, 0, Math.PI*2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // Game controls and update/movement
+  function handleInput(){
+    if(keysPressed['arrowleft'] || keysPressed['a']){
+      player.x -= player.speed;
+    }
+    if(keysPressed['arrowright'] || keysPressed['d']){
+      player.x += player.speed;
+    }
+    // Clamp to canvas
+    player.x = clamp(player.x, player.width/2, W - player.width/2);
+    if(keysPressed['arrowup'] || keysPressed['w']){
+      player.y -= player.speed;
+    }
+    if(keysPressed['arrowdown'] || keysPressed['s']){
+      player.y += player.speed;
+    }
+    player.y = clamp(player.y, 0, H - player.height);
+  }
+
+  // Shooting management
+  function handleShooting(){
+    if(player.cooldown > 0){
+      player.cooldown--;
+      return;
+    }
+    if(keysPressed[' ']){
+      missiles.push(new Missile(player.x, player.y));
+      playShootSound();
+      player.cooldown = 7;
+    }
+  }
+
+  // Update and render all missiles
+  function updateMissiles(){
+    missiles = missiles.filter(m => m.active);
+    missiles.forEach(m => {
+      m.update();
+      m.draw(ctx);
+    });
+  }
+
+  // Update and render all asteroids
+  function updateAsteroids(){
+    asteroids = asteroids.filter(a => a.live);
+    asteroids.forEach(a => {
+      a.update();
+      a.draw(ctx);
+    });
+  }
+
+  // Particle update and draw (explosions)
+  function updateParticles(){
+    for(let i = particles.length-1; i>=0; i--){
+      let p = particles[i];
+      p.update();
+      if(p.life <=0){
+        particles.splice(i,1);
+      } else {
+        p.draw(ctx);
+      }
+    }
+  }
+
+  // Spawn a new asteroid randomly from top or sides with varied vectors
+function spawnAsteroid() {
+  const edge = Math.floor(Math.random() * 3);
+  let x, y, vx, vy;
+  const size = randomRange(16, 36); // tamanhos variados
+
+  const speedFactor = Math.max(1, 30 / size); // menor tamanho = mais velocidade
+
+  if (edge === 0) { // Do topo
+    x = randomRange(size, W - size);
+    y = -size;
+    vx = randomRange(-1.2, 1.2) * speedFactor * 0.4;
+    vy = randomRange(4.2, 7.0) * speedFactor;
+  } else if (edge === 1) { // Da esquerda
+    x = -size;
+    y = randomRange(size, H / 2);
+    vx = randomRange(1.8, 3.5) * speedFactor;
+    vy = randomRange(2.5, 4.2) * speedFactor * 0.6;
+  } else { // Da direita
+    x = W + size;
+    y = randomRange(size, H / 2);
+    vx = randomRange(-3.5, -1.8) * speedFactor;
+    vy = randomRange(2.5, 4.2) * speedFactor * 0.6;
+  }
+
+  asteroids.push(new Asteroid(x, y, vx, vy, size));
+}
+
+
+  // Check collisions between missiles and asteroids, and player and asteroids
+  function checkCollisions(){
+    asteroids.forEach(a => {
+      missiles.forEach(m => {
+        if(a.live && m.active && a.collidesWith(m)){
+          a.live = false;
+          m.active = false;
+          
+          explosionEffect(a.x, a.y, a.size);
+          playExplosionSound();
+          updateInfoBar();
+        }
+      });
+      if(a.live && a.collidesWithPlayer(player)){
+        a.live = false;
+        player.lives--;
+        hitCount++;
+        if(hitCount === 1){
+          score = Math.floor(score * 0.9); // perde 10%
+        } else if(hitCount === 2){
+          score = Math.floor(score * 0.75); // perde 25%
+        } else {
+          score = Math.floor(score * 0.6); // perde 40%
+        }
+        explosionEffect(a.x, a.y, a.size * 1.3);
+        playExplosionSound();
+        updateInfoBar();
+        if(true) endGame(false);
+      }
+    });
+  }
+
+  // Explosion particle effect
+  function explosionEffect(x, y, size){
+    const count = Math.floor(size * 5);
+    for(let i=0;i<count;i++){
+      const angle = Math.random()*Math.PI*2;
+      const speed = Math.random()*5+2;
+      const vx = Math.cos(angle)*speed;
+      const vy = Math.sin(angle)*speed;
+      const radius = randomRange(2,6);
+      const life = 30 + Math.random()*30;
+      const colors = ['#ffcccc','#ff4f4f','#ffa3a3'];
+      const color = colors[Math.floor(Math.random()*colors.length)];
+      particles.push(new Particle(x,y,vx,vy,radius,life,color));
+    }
+  }
+
+  // Update info bar with score and lives in red
+  function updateInfoBar(){
+    infoBar.textContent = `PONTUAÇÃO: ${score}`;
+  }
+
+  // Game over
+  function endGame(success){
+    gameRunning = false;
+    clearInterval(countdownInterval);
+    clearInterval(spawnInterval);
+    clearInterval(gameLoopId);
+    clearInterval(window.scoreInterval);
+    startBtn.disabled = false;
+    startBtn.textContent = success ? 'REINICIAR DEFESA PLANETÁRIA' : 'TENTAR NOVAMENTE';
+    if(success) {
+      infoBar.textContent = `✨ PLANETA SALVO! PONTUAÇÃO FINAL: ${score} ✨`;
+      document.getElementById("arrival-planet").style.opacity = "1";
+      document.getElementById("arrival-planet").style.right = "60px";
+      document.getElementById("arrival-ship").style.opacity = "1";
+      document.getElementById("arrival-ship").style.top = "50%";
+      typeMessage("VOCÊ CHEGOU AO SEU DESTINO.", "typed-message", 70);
+      logMessage('MISSÃO CUMPRIDA. O PLANETA SOBREVIVEU!');
+    } else {
+      infoBar.textContent = `💥 IMPACTO OCORREU! PONTUAÇÃO FINAL: ${score} 💥`;
+      logMessage('IMPACTO INEVITÁVEL... FIM DO PROTOCOLO.');
+      impactImage.style.opacity = '1';
+      impactImage.style.transform = 'translate(-50%, -50%) scale(1)';
+      
+    }
+  }
+
+  // Logging for console (kept minimal)
+  function logMessage(msg){
+    console.log(`[LOG] ${msg}`);
+  }
+
+  // Main update loop
+  function update(){
+    if(!gameRunning) return;
+    ctx.clearRect(0,0,W,H);
+
+    handleInput();
+    handleShooting();
+    drawPlayer();
+    updateMissiles();
+    updateAsteroids();
+    updateParticles();
+    checkCollisions();
+
+    gameLoopId = requestAnimationFrame(update);
+  }
+
+  // Handle keyboard input
+  function handleInput(){
+    if(keysPressed['arrowleft'] || keysPressed['a']){
+      player.x -= player.speed;
+    }
+    if(keysPressed['arrowright'] || keysPressed['d']){
+      player.x += player.speed;
+    }
+    player.x = clamp(player.x, player.width/2, W - player.width/2);
+    if(keysPressed['arrowup'] || keysPressed['w']){
+      player.y -= player.speed;
+    }
+    if(keysPressed['arrowdown'] || keysPressed['s']){
+      player.y += player.speed;
+    }
+    player.y = clamp(player.y, 0, H - player.height);
+  }
+
+  // Handle shooting missiles
+  function handleShooting(){
+    if(player.cooldown > 0){
+      player.cooldown--;
+      return;
+    }
+    if(keysPressed[' ']){
+      missiles.push(new Missile(player.x, player.y));
+      playShootSound();
+      player.cooldown = 10;
+    }
+  }
+
+  // Initialization and start game
+  function startGame(){
+    if(gameRunning) return;
+    initAudio();
+    countdownTime = 60;
+    score = 0;
+    let hitCount = 0;
+    
+    player.lives = 1;
+    let scoreVelocity = 1;
+    if(window.scoreInterval) clearInterval(window.scoreInterval);
+    window.scoreInterval = setInterval(() => {
+      score += Math.floor(scoreVelocity);
+      scoreVelocity += 0.02;
+      updateInfoBar();
+    }, 80);
+    player.x = W / 2;
+    missiles = [];
+    asteroids = [];
+    particles.length = 0;
+    updateInfoBar();
+    impactImage.style.opacity = '0';
+    appDiv.classList.remove('tremor', 'blink-red');
+    startBtn.disabled = true;
+    startBtn.textContent = 'DEFESA EM ANDAMENTO...';
+
+    // Start countdown timer
+    if(countdownInterval) clearInterval(countdownInterval);
+    countdownInterval = setInterval(() => {
+      countdownTime--;
+      updateCountdownDisplay();
+      if(countdownTime === 20){
+        
+      }
+      
+      updateInfoBar();
+      if(countdownTime <= 0){
+        clearInterval(countdownInterval);
+        endGame(player.lives > 0);
+      }
+    }, 1000);
+
+    // Start asteroid spawn every 750ms, increasing difficulty over time
+    let spawnRate = 350;
+    let difficultyStep = 0;
+    if(spawnInterval) clearInterval(spawnInterval);
+    spawnInterval = setInterval(() => {
+      for(let i = 0; i < 4 + Math.floor(difficultyStep / 25); i++) spawnAsteroid();
+      difficultyStep++;
+      if(difficultyStep % 20 === 0 && spawnRate > 150){
+        spawnRate -= 60;
+        clearInterval(spawnInterval);
+        spawnInterval = setInterval(spawnAsteroid, spawnRate);
+      }
+    }, spawnRate);
+
+    gameRunning = true;
+    update();
+  }
+
+  // Countdown display update function
+  function updateCountdownDisplay(){
+    const minutes = Math.floor(countdownTime / 60);
+    const seconds = countdownTime % 60;
+    countdownEl.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+  }
+
+  
+function typeMessage(text, elementId, delay = 50) {
+  const el = document.getElementById(elementId);
+  el.style.opacity = '1';
+  el.textContent = '';
+  let i = 0;
+  const interval = setInterval(() => {
+    el.textContent += text[i];
+    i++;
+    if (i >= text.length) clearInterval(interval);
+  }, delay);
+}
+
+  // Help with clamping values
+  function clamp(v, min, max){ return Math.min(max, Math.max(min, v)); }
+
+  // Keyboard listeners
+  window.addEventListener('keydown', (e) => {
+    keysPressed[e.key.toLowerCase()] = true;
+    // Prevent scrolling for space and arrows
+    if([' ', 'arrowleft', 'arrowright', 'a', 'd'].includes(e.key.toLowerCase())) e.preventDefault();
+  });
+  window.addEventListener('keyup', (e) => {
+    keysPressed[e.key.toLowerCase()] = false;
+  });
+
+  // Button to start game
+  startBtn.addEventListener('click', () => {
+    if(audioCtx && audioCtx.state === 'suspended'){
+      audioCtx.resume();
+    }
+    startGame();
+  });
+})();
+</script>
+</body>
+</html>
+
