@@ -118,6 +118,14 @@
       <a href="menu/cenarios.html">Cenarios</a>
       <a href="menu/personagens.html">Personagens</a>
       <a href="menu/distrax/distrax.html">Distrax</a>
+
+      <div class="mt-4 text-center" style="color: #00e0ff; font-size: 0.9rem;">
+        <div style="border-top: 1px solid #00ccff; margin-top: 10px; padding-top: 10px;">
+          <strong>Contador:</strong><br />
+          <span id="timer">Inicializando...</span>
+        </div>
+      </div>
+
     </nav>
 
     <div class="main-content">
@@ -174,6 +182,29 @@
       </footer>
     </div>
   </div>
+
+  <script>
+    const dataAlvo = new Date("2025-06-01T12:00:00").getTime();
+
+    const intervalo = setInterval(function () {
+      const agora = new Date().getTime();
+      const tempoRestante = dataAlvo - agora;
+
+      if (tempoRestante <= 0) {
+        clearInterval(intervalo);
+        document.getElementById("timer").innerText = "Missão iniciada!";
+        return;
+      }
+
+      const dias = Math.floor(tempoRestante / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((tempoRestante % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutos = Math.floor((tempoRestante % (1000 * 60 * 60)) / (1000 * 60));
+      const segundos = Math.floor((tempoRestante % (1000 * 60)) / 1000);
+
+      const formatado = `${dias} Dias ${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+      document.getElementById("timer").innerText = formatado;
+    }, 1000);
+  </script>
 
 </body>
 </html>
