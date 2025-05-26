@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projeto AUREON - Central</title>
+  <title>Projeto AUREON</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -12,9 +12,8 @@
     * { box-sizing: border-box; }
 
     html {
-  scroll-behavior: smooth;
+      scroll-behavior: smooth;
     }
-
 
     body, html {
       height: 100%;
@@ -31,11 +30,14 @@
     }
 
     .sidebar {
-      width: 180px;
+      width: 210px;
       background: linear-gradient(to bottom, #0f1c2e, #09131f);
       border-right: 2px solid #00ccff;
       padding: 25px 15px;
       box-shadow: 4px 0 10px rgba(0, 204, 255, 0.1);
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
     }
 
     .menu-title {
@@ -57,7 +59,6 @@
       font-size: 0.95rem;
       border-radius: 8px;
       transition: all 0.3s ease;
-      background-color: transparent;
     }
 
     .sidebar a:hover {
@@ -70,6 +71,7 @@
       flex: 1;
       display: flex;
       flex-direction: column;
+      margin-left: 210px;
     }
 
     header {
@@ -92,8 +94,8 @@
     .section-box {
       border: 1px solid #00ccff;
       border-radius: 6px;
-      padding: 15px;
-      margin-bottom: 20px;
+      padding: 20px;
+      margin-bottom: 25px;
     }
 
     footer {
@@ -103,108 +105,204 @@
       padding: 10px;
       font-size: 0.8rem;
     }
+
+    .destaque-video {
+      animation: pulse 2s infinite;
+      background: #012030;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      margin-top: 12px;
+      color: #00ccff;
+      box-shadow: 0 0 8px #00ccff55;
+      text-align: center;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 8px #00ccff55; }
+      50% { box-shadow: 0 0 12px #00ccff99; }
+      100% { box-shadow: 0 0 8px #00ccff55; }
+    }
+
+    @keyframes piscar {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="page-container">
-    
-    <nav class="sidebar">
-      <div class="menu-title">Menu</div>
-      <a href="#inicio">Início</a>
-      <a href="#missao">Missão</a>
-      <a href="#ia">IA</a>
-      <a href="#contato">Contato</a>
-      <a href="menu/cenarios.html">Cenarios</a>
-      <a href="menu/personagens.html">Personagens</a>
-      <a href="menu/distrax/distrax.html">Distrax</a>
+<div class="page-container">
+  <nav class="sidebar">
+    <div class="menu-title">Menu</div>
+    <a href="#inicio">Sobre</a>
+    <a href="#ameaca">Ameaça</a>
+    <a href="#jogo">Objetivo</a>
+    <a href="menu/personagens.html">Personagens</a>
+    <a href="menu/cenarios.html">Cenários</a>
+    <a href="#impacto">Local de Impacto</a>
+    <a href="menu/distrax/distrax.html">Distrax</a>
 
-      <div class="mt-4 text-center" style="color: #00e0ff; font-size: 0.9rem;">
-        <div style="border-top: 1px solid #00ccff; margin-top: 10px; padding-top: 10px;">
-          <strong>Contador:</strong><br />
-          <span id="timer">Inicializando...</span>
-        </div>
+    <div class="mt-4 text-center" style="color: #00e0ff; font-size: 0.9rem;">
+      <div style="border-top: 1px solid #00ccff; margin-top: 10px; padding-top: 10px;">
+        <strong>Contador:</strong><br />
+        <span id="timer">Inicializando...</span>
       </div>
-
-    </nav>
-
-    <div class="main-content">
-      <header>
-        <h1>Projeto AUREON</h1>
-      </header>
-
-      <main class="container">
-        <div id="inicio" class="row">
-          <div class="col-md-6">
-            <div class="section-box">
-              <h2>Central de Comando</h2>
-              <p>Monitoramento em tempo real de eventos e status operacionais.</p>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="section-box">
-              <h2>Status Atual</h2>
-              <p>Sistema ativo. Aguardando entrada de dados para análise orbital automatizada.</p>
-            </div>
-          </div>
-        </div>
-
-        <div id="missao" class="row">
-          <div class="col-12">
-            <div class="section-box">
-              <h2>Próxima Etapa</h2>
-              <p>Preparação para integração com o módulo de Inteligência Artificial preditiva.</p>
-            </div>
-          </div>
-        </div>
-
-        <div id="ia" class="row">
-          <div class="col-12">
-            <div class="section-box">
-              <h2>IA Operacional</h2>
-              <p>Sistema de IA pronto para análise de ameaças orbitais com base em dados coletados.</p>
-            </div>
-          </div>
-        </div>
-
-        <div id="contato" class="row">
-          <div class="col-12">
-            <div class="section-box">
-              <h2>Contato</h2>
-              <p>Para mais informações, envie um comunicado à equipe do Projeto AUREON.</p>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      <footer>
-        © 2025 Projeto AUREON | Simulação Educacional
-      </footer>
     </div>
+  </nav>
+
+  <div class="main-content">
+    <header>
+      <h1>Projeto AUREON</h1>
+    </header>
+
+    <main class="container">
+
+      <section id="inicio" style="margin-bottom: 60px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: center;">
+          <div style="flex: 1; min-width: 300px;">
+            <h2 class="titulo-3d">Sobre o Jogo</h2>
+            <p style="text-align: justify;">
+              AUREON é uma simulação interativa que propõe um cenário crítico onde a humanidade se depara com uma ameaça iminente vinda do espaço. O projeto busca provocar reflexões sobre a desinformação, a resposta coletiva e o uso da tecnologia em situações de emergência global.
+            </p>
+            <p style="text-align: justify;">
+              Desenvolvido com foco educacional e de entretenimento, AUREON combina elementos visuais e decisões em tempo real para simular o impacto de uma gestão de crise. A experiência é acessível, responsiva e pode ser expandida conforme o interesse dos participantes.
+            </p>
+            <p style="text-align: justify;">
+              A inspiração principal para o jogo vem do filme <strong>\"Não Olhe Para Cima\"</strong>, uma sátira moderna sobre como o mundo lida com verdades científicas ignoradas por interesses políticos e midiáticos.
+            </p>
+          </div>
+          <div style="flex: 1; min-width: 300px;">
+            <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 0 14px #00ccff99;">
+              <iframe allowfullscreen src="https://www.youtube.com/embed/Lw25J0HFIrc?start=63"
+                      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+                      title="Resumo do filme Não Olhe Para Cima"></iframe>
+            </div>
+            <div class="destaque-video">
+              ▶️ ASSISTA E DESCUBRA A ORIGEM DO JOGO
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="ameaca" style="margin-bottom: 60px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: center; flex-direction: row-reverse;">
+          <div style="flex: 1; min-width: 300px;">
+            <h2 class="titulo-3d">Ameaça Inicial</h2>
+            <p style="text-align: justify;">
+              Assim como no filme <strong>“Não Olhe Para Cima”</strong>, o surgimento de uma ameaça iminente — neste caso, um corpo celeste em rota de colisão — não é apenas um fenômeno científico, mas um desafio à nossa capacidade coletiva de compreender e agir.
+            </p>
+            <p style="text-align: justify;">
+              Em AUREON, essa ameaça foi detectada por sensores de monitoramento orbital. As estimativas apontam para um impacto potencialmente catastrófico em menos de 6 meses. A missão imediata é decidir: alertar o mundo e correr contra o tempo, ou subestimar os dados e correr o risco de colapso?
+            </p>
+            <ul style="margin-top: 10px; color: #00ccff;">
+              <li>Cometa em rota de colisão direta</li>
+              <li>Impacto previsto em menos de 6 meses</li>
+              <li>Negligência política e mediática afetam decisões</li>
+            </ul>
+          </div>
+          <div style="flex: 1; min-width: 300px;">
+            <div style="border: 2px dashed #00ccff88; padding: 30px; border-radius: 10px; text-align: center; font-size: 0.95rem; color: #00ccffbb; font-style: italic;">
+              🌌 Imagem conceitual em desenvolvimento: em breve, você verá aqui uma visualização impactante da ameaça.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Substituição da imagem em Objetivo do Jogo -->
+      <section id="jogo" style="margin-bottom: 60px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: center;">
+          <div style="flex: 1; min-width: 300px;">
+            <h2 class="titulo-3d">Objetivo do Jogo</h2>
+            <p style="text-align: justify;">
+              Inspirado na trama de <strong>“Não Olhe Para Cima”</strong>, o jogo propõe que você entre na pele de cientistas, conselheiros e tomadores de decisão que precisam agir rapidamente diante de uma ameaça catastrófica. Sua principal função: convencer instituições globais da gravidade da situação e organizar uma resposta coordenada.
+            </p>
+            <p style="text-align: justify;">
+              Cada decisão importa. Desde enviar um alerta mundial, até escolher silenciar dados em nome da estabilidade. Seu sucesso será medido não só pela salvação do planeta, mas pela forma como a sociedade reage, se adapta — ou entra em colapso.
+            </p>
+          </div>
+          <div style="flex: 1; min-width: 300px;">
+            <div style="border: 2px dashed #00ccff88; padding: 30px; border-radius: 10px; text-align: center; font-size: 0.95rem; color: #00ccffbb; font-style: italic;">
+              🧠 Imagem interativa em construção: essa área mostrará o ambiente do jogo sendo criado.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="impacto" class="section-box">
+        <h2 style="text-align: center;">Zona de Impacto Detectada</h2>
+        <div style="text-align: center; margin-bottom: 15px;">
+          <button id="toggleImpact" class="btn btn-outline-danger" style="font-family: 'Orbitron';">
+            Ativar Impacto
+          </button>
+        </div>
+        <div style="display: flex; justify-content: center;">
+          <div style="position: relative; width: 100%; max-width: 700px;">
+            <img src="img/mapamundi2.png" alt="Mapa Mundi" style="width: 100%; border-radius: 12px;" />
+            <div id="impactPoint" style="
+              position: absolute;
+              top: 42%;
+              left: 59.5%;
+              transform: translate(-50%, -50%);
+              width: 20px;
+              height: 20px;
+              background-color: red;
+              border-radius: 50%;
+              box-shadow: 0 0 10px red;
+              animation: piscar 1s infinite;
+              display: none;
+            "></div>
+          </div>
+        </div>
+      </section>
+
+      <p style="font-size: 0.75rem; color: #00ccff88; text-align: center; font-style: italic; margin-top: 40px;">
+        As imagens utilizadas neste site são meramente ilustrativas e servem como representação conceitual do universo simulado de AUREON.
+      </p>
+
+    </main>
+
+    <footer>
+      © 2025 Projeto AUREON | Simulação Educacional
+    </footer>
   </div>
+</div>
 
-  <script>
-    const dataAlvo = new Date("2025-06-01T12:00:00").getTime();
+<script>
+  const dataAlvo = new Date("2025-06-01T12:00:00").getTime();
 
-    const intervalo = setInterval(function () {
-      const agora = new Date().getTime();
-      const tempoRestante = dataAlvo - agora;
+  const intervalo = setInterval(function () {
+    const agora = new Date().getTime();
+    const tempoRestante = dataAlvo - agora;
 
-      if (tempoRestante <= 0) {
-        clearInterval(intervalo);
-        document.getElementById("timer").innerText = "Missão iniciada!";
-        return;
-      }
+    if (tempoRestante <= 0) {
+      clearInterval(intervalo);
+      document.getElementById("timer").innerText = "Missão iniciada!";
+      return;
+    }
 
-      const dias = Math.floor(tempoRestante / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((tempoRestante % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutos = Math.floor((tempoRestante % (1000 * 60 * 60)) / (1000 * 60));
-      const segundos = Math.floor((tempoRestante % (1000 * 60)) / 1000);
+    const dias = Math.floor(tempoRestante / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((tempoRestante % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutos = Math.floor((tempoRestante % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((tempoRestante % (1000 * 60)) / 1000);
 
-      const formatado = `${dias} Dias ${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
-      document.getElementById("timer").innerText = formatado;
-    }, 1000);
-  </script>
+    const formatado = `${dias} Dias ${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+    document.getElementById("timer").innerText = formatado;
+  }, 1000);
+
+  const btnToggle = document.getElementById("toggleImpact");
+  const impacto = document.getElementById("impactPoint");
+
+  btnToggle.addEventListener("click", () => {
+    if (impacto.style.display === "none") {
+      impacto.style.display = "block";
+      btnToggle.textContent = "Desativar Impacto";
+    } else {
+      impacto.style.display = "none";
+      btnToggle.textContent = "Ativar Impacto";
+    }
+  });
+</script>
 
 </body>
 </html>
