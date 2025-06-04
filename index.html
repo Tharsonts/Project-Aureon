@@ -1,401 +1,1359 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projeto AUREON</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<style>
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 6px #fff, 0 0 10px #0ff, 0 0 14px #0ff;
+  }
+  20%, 24%, 55% {
+    opacity: 0.4;
+    text-shadow: none;
+  }
+}
 
-  <style>
-    * { box-sizing: border-box; }
+@keyframes glow-fade {
+  0% {
+    text-shadow: 2px 2px 0 #ff0000, -2px -2px 0 #00b3ff;
+  }
+  50% {
+    text-shadow: none;
+    opacity: 0.5;
+  }
+  100% {
+    text-shadow: 2px 2px 0 #ff0000, -2px -2px 0 #00b3ff;
+  }
+}
 
-    html {
-      scroll-behavior: smooth;
+.titulo-3d {
+  color: #00ccff;
+  text-shadow: 0 0 12px #00b3ff, 0 0 24px #0077aa;
+  animation: tituloPulse 3s ease-in-out infinite;
+}
+@keyframes tituloPulse {
+  0%, 100% {
+    text-shadow: 0 0 12px #00b3ff, 0 0 24px #0077aa;
+  }
+  50% {
+    text-shadow: 0 0 24px #00ccff, 0 0 42px #00ccff;
+  }
+}
+
+#logo-projeto {
+  animation: flicker 3.2s infinite;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+
+</style>
+
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Projeto AUREON - Central de Comando</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&amp;family=Exo+2:wght@300;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+  }
+  html, body {
+    margin: 0; padding: 0;
+    height: 100%;
+    background-color: #03040a;
+    font-family: 'Orbitron', 'Exo 2', monospace, sans-serif;
+    color: #00ccff;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+  ::selection {
+    background: #059bd8;
+    color: #001e2b;
+  }
+  a {
+    color: #00ccff;
+    text-decoration: none;
+  }
+  a:hover, a:focus {
+    text-decoration: underline;
+  }
+
+  /* === MENU LATERAL SIMPLES === */
+  #sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 240px;
+  height: 100vh;
+  background: rgba(0, 5, 10, 0.96);
+  border-right: 1px solid #03303f;
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
+  z-index: 1000;
+  user-select: none;
+  backdrop-filter: blur(4px);
+}
+  #sidebar header {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.9rem;
+    color: #00b3e6;
+    letter-spacing: 0.18em;
+    margin-bottom: 32px;
+    text-shadow: 0 0 6px #00a1cc;
+  }
+  #sidebar nav ul {
+    list-style: none;
+    padding: 0 10px;
+    margin: 0;
+  }
+  #sidebar nav ul li {
+    margin-bottom: 16px;
+  }
+  #sidebar nav ul li button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #00ccff;
+  font-size: 1.15rem;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.25s ease;
+
+  font-family: 'Orbitron', sans-serif;
+}
+  #sidebar nav ul li button i {
+    margin-right: 14px;
+    font-size: 1.5rem;
+    color: #00ccff;
+  }
+  #sidebar nav ul li button:hover,
+  #sidebar nav ul li button:focus-visible {
+    background-color: #003b56;
+    outline-offset: 2px;
+    outline: 2px solid #0099cc;
+  }
+
+  /* --- CONTEÚDO PRINCIPAL --- */
+  #main-content {
+    margin-left: 240px;
+    padding: 28px 30px 48px 30px;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* Cabeçalho alerta */
+  header#topbar {
+    text-align: center;
+    font-size: 2.75rem;
+    font-weight: 900;
+    color: #e44848;
+    letter-spacing: 0.16em;
+    padding-bottom: 30px;
+    user-select: none;
+    animation: pulseAlert 2s infinite ease-in-out;
+    text-shadow: 0 0 18px #ff4d4d;
+  }
+  @keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.6; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+  @keyframes pulseAlert {
+    0%, 100% {
+      color: #e44848;
+      text-shadow: 0 0 18px #ff4d4d, 0 0 42px #ffb3b3;
     }
-
-    body, html {
-      height: 100%;
-      margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background-color: #0b0d15;
-      color: #00ccff;
+    50% {
+      color: #ff1a1a;
+      text-shadow: 0 0 35px #ff1a1a, 0 0 60px #ff4d4d;
     }
+  }
 
-    .page-container {
+  /* Fundo animado: asteroides e partículas */
+  #canvas-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background: radial-gradient(circle at center, #0a141d, #00070a);
+  }
+
+  /* Seções separadas */
+  section {
+    margin: 120px auto;
+    padding: 28px 32px;
+    transition: box-shadow 0.3s ease;
+  }
+  section h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: #00ccff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 12px #0099cc;
+  }
+
+  /* Conteúdo mais espaçado e separado */
+  section p {
+    margin: 18px 0 14px 0;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5;
+  
+  font-family: 'Orbitron', sans-serif;}
+  section ul, section ol {
+    padding-left: 22px;
+    margin-bottom: 16px;
+  }
+  section li {
+    margin-bottom: 10px;
+  
+  font-family: 'Orbitron', sans-serif;}
+
+  /* Cards em seção especifica */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    gap: 20px;
+  }
+  .card {
+    background: linear-gradient(145deg, #003647, #005073);
+    border-radius: 14px;
+    padding: 22px 26px;
+    color: #caf4ffdd;
+    box-shadow: 0 0 6px #00a8d9aa;
+    font-weight: 600;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    cursor: default;
+  }
+  .card:hover {
+    box-shadow: 0 0 20px #00bbffcc;
+    transform: translateY(-4px);
+  }
+  .card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    margin-bottom: 12px;
+    font-size: 1.4rem;
+    color: #00ccff;
+    text-shadow: 0 0 8px #0099cc;
+  }
+
+  /* Mapa */
+  #impact-map {
+    height: 460px;
+    max-width: 900px;
+    margin: 30px auto 18px;
+    position: relative;
+    border-radius: 16px;
+    background: #041922;
+    box-shadow: 0 0 20px #00a8ddaa;
+  }
+  #impact-canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    display: block;
+  }
+  .map-tooltip {
+    position: absolute;
+    padding: 7px 12px;
+    background: #012042cc;
+    border-radius: 7px;
+    color: #00ccff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    pointer-events: none;
+    opacity: 0;
+    text-shadow: 0 0 6px #00bbffcc;
+    transition: opacity 0.3s ease;
+    user-select: none;
+    white-space: nowrap;
+    z-index: 10;
+  }
+  .map-tooltip.visible {
+    opacity: 1;
+  }
+
+  /* IA SECTION */
+  #ia-interativa {
+    max-width: 900px;
+    margin: 48px auto 60px auto;
+    background: rgba(4, 25, 40, 0.85);
+    border-radius: 14px;
+    padding: 28px 28px 34px;
+    box-shadow: 0 0 18px #00aee9bb;
+    color: #00ccff;
+    user-select: text;
+  }
+  #ia-interativa h2 {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 2.2rem;
+    margin-bottom: 18px;
+    text-align: center;
+    color: #00ccff;
+    text-shadow: 0 0 14px #0077aa;
+  }
+  #ai-terminal {
+    background: #011a2e;
+    border-radius: 14px;
+    border: 1px solid #0288d1;
+    font-family: monospace;
+    font-size: 1.05rem;
+    max-height: 230px;
+    padding: 18px 20px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+    line-height: 1.4;
+    box-shadow: inset 0 0 15px #008bd1cc;
+    white-space: pre-line;
+  }
+
+  #ai-input-area {
+    display: flex;
+    max-width: 100%;
+  }
+  #ai-input-area input {
+    flex-grow: 1;
+    font-family: monospace;
+    font-size: 1rem;
+    padding: 12px 14px;
+    border: 1.5px solid #0288d1;
+    border-radius: 14px 0 0 14px;
+    outline: none;
+    color: #00ccff;
+    background: #022a46;
+    transition: background-color 0.3s ease;
+  }
+  #ai-input-area input::placeholder {
+    color: #00587a;
+  }
+  #ai-input-area input:focus {
+    background: #014779;
+  }
+  #ai-input-area button {
+    background-color: #00aaee;
+    border: none;
+    border-radius: 0 14px 14px 0;
+    color: #00262c;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 12px 22px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+  #ai-input-area button:hover:not(:disabled) {
+    background-color: #0087c1;
+  }
+  #ai-input-area button:disabled {
+    background-color: #00577e;
+    cursor: not-allowed;
+  }
+
+  /* Scrollbar IA */
+  #ai-terminal::-webkit-scrollbar {
+    width: 7px;
+  }
+  #ai-terminal::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  #ai-terminal::-webkit-scrollbar-thumb {
+    background: #00a5dbcc;
+    border-radius: 10px;
+  }
+
+  /* Responsivo */
+  @media (max-width: 960px) {
+    #sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 240px;
+  height: 100vh;
+  background: rgba(0, 5, 10, 0.96);
+  border-right: 1px solid #03303f;
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
+  z-index: 1000;
+  user-select: none;
+  backdrop-filter: blur(4px);
+}
+    #main-content {
+      margin-left: 220px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+  @media (max-width: 700px) {
+    #sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 240px;
+  height: 100vh;
+  background: rgba(0, 5, 10, 0.96);
+  border-right: 1px solid #03303f;
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
+  z-index: 1000;
+  user-select: none;
+  backdrop-filter: blur(4px);
+}
+    #sidebar header {
+      display: none;
+    }
+    #sidebar nav ul {
       display: flex;
-      min-height: 100vh;
       flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
+      margin-top: 0;
+      padding: 0;
     }
-
-    .sidebar {
-      width: 210px;
-      background: linear-gradient(to bottom, #0f1c2e, #09131f);
-      border-right: 2px solid #00ccff;
-      padding: 25px 15px;
-      box-shadow: 4px 0 10px rgba(0, 204, 255, 0.1);
-      position: fixed;
-      height: 100vh;
-      overflow-y: auto;
-    }
-
-    .menu-title {
-      font-size: 1.1rem;
-      text-align: center;
-      margin-bottom: 25px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #00ccff;
-      color: #00e0ff;
-      letter-spacing: 1px;
-    }
-
-    .sidebar a {
-      color: #00e0ff;
-      text-decoration: none;
-      display: block;
-      padding: 10px 12px;
-      margin: 10px 0;
-      font-size: 0.95rem;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-    }
-
-    .sidebar a:hover {
-      background-color: #012030;
-      color: #ffffff;
-      box-shadow: 0 0 8px rgba(0, 204, 255, 0.5);
-    }
-
-    .main-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      margin-left: 210px;
-    }
-
-    header {
-      background-color: #012030;
-      padding: 20px;
-      text-align: center;
-      text-shadow: 0 0 6px #00b3ff;
-      border-bottom: 2px solid #00ccff;
-    }
-
-    header h1 {
-      font-size: 2.5rem;
+    #sidebar nav ul li {
       margin: 0;
-      color: #00e0ff;
     }
+    #sidebar nav ul li button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #00ccff;
+  font-size: 1.15rem;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.25s ease;
 
-    header p {
-      font-size: 1.1rem;
-      color: #00ccff;
-      margin-top: 5px;
-      opacity: 0.8;
+  font-family: 'Orbitron', sans-serif;
+}
+    #sidebar nav ul li button i {
+      margin: 0;
+      font-size: 1.5rem;
+      display: block;
     }
+    #main-content {
+      margin-left: 0;
+      margin-bottom: 54px;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
 
-    main {
-      flex: 1;
-      padding: 30px;
-    }
+  /* Cards especiais para comunicados com animação texto (ticker horizontal) */
+  .cards.comunicados {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .cards.comunicados .ticker-container {
+    position: relative;
+    width: 90%;
+    max-width: 900px;
+    height: 64px;
+    background: linear-gradient(90deg, #0a0000bb, #330a0abb);
+    border-radius: 18px;
+    box-shadow: 0 0 30px #ff3355, inset 0 0 14px #ff3355;
+    overflow: hidden;
+    user-select: none;
+  }
+  .cards.comunicados .ticker-text {
+    white-space: nowrap;
+    display: inline-block;
+    padding-left: 100%;
+    font-weight: 700;
+    font-size: 1.4rem;
+    line-height: 64px;
+    color: #ff7788;
+    text-shadow: 0 0 15px #ff4466;
+    animation: tickerMove 22s linear infinite;
+  }
+  @keyframes tickerMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
 
-    .section-box {
-      border: 1px solid #00ccff;
-      border-radius: 6px;
-      padding: 25px;
-      margin-bottom: 35px;
-      background-color: #011520;
-      box-shadow: 0 0 15px rgba(0, 204, 255, 0.15);
-    }
 
-    .section-box h2 {
-      color: #00e0ff;
-      margin-bottom: 20px;
-      text-align: center;
-      border-bottom: 1px dashed rgba(0, 204, 255, 0.3);
-      padding-bottom: 10px;
-    }
-
-    footer {
-      background-color: #012030;
-      color: #00ccff;
-      text-align: center;
-      padding: 15px; 
-      font-size: 0.85rem;
-      border-top: 2px solid #00ccff;
-    }
-
-    .destaque-video {
-      animation: pulse 2s infinite;
-      background: #012030;
-      padding: 10px 18px;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      margin-top: 15px;
-      color: #00ccff;
-      box-shadow: 0 0 10px #00ccff77; 
-      text-align: center;
-      letter-spacing: 0.5px;
-    }
-
-    .text-justify {
-      text-align: justify;
-    }
-
-    .image-concept {
-      border: 2px dashed #00ccff88;
-      padding: 30px;
-      border-radius: 10px;
-      text-align: center;
-      font-size: 0.95rem;
-      color: #00ccffbb;
-      font-style: italic;
-      height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .list-style-none {
-        list-style: none;
-        padding-left: 0;
-    }
-
-    .list-style-none li::before {
-        content: "• ";
-        color: #00ffcc;
-        font-weight: bold;
-        display: inline-block;
-        width: 1em;
-        margin-left: -1em;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 10px #00ccff55; }
-      50% { box-shadow: 0 0 16px #00ccff99; }
-      100% { box-shadow: 0 0 10px #00ccff55; }
-    }
-
-    @keyframes piscar {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-  </style>
+</style>
 </head>
 <body>
+<!-- Menu lateral simples -->
+<div aria-label="Menu lateral Projeto AUREON" id="sidebar" role="navigation">
+<header>
 
-<div class="page-container">
-  <nav class="sidebar">
-    <div class="menu-title">Menu</div>
-    <a href="#inicio">Sobre o AUREON</a>
-    <a href="#ia-aureon">IA AUREON</a>
-    <a href="#ameaca">A Ameaça</a>
-    <a href="#jogo">Jornada do Jogo</a>
-    <a href="menu/personagens.html">Personagens Chave</a>
-    <a href="menu/cenarios.html">Cenários Finais</a>
-    <a href="#impacto">Zona de Impacto</a>
-    <a href="menu/distrax/distrax.html">Distrax (Mini-Jogos)</a>
+<style>
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 6px #fff, 0 0 10px #0ff, 0 0 14px #0ff;
+  }
+  20%, 24%, 55% {
+    opacity: 0.4;
+    text-shadow: none;
+  }
+}
 
-    <div class="mt-4 text-center" style="color: #00e0ff; font-size: 0.9rem;">
-      <div style="border-top: 1px solid #00ccff; margin-top: 10px; padding-top: 10px;">
-        <strong>Tempo para o Impacto:</strong><br />
-        <span id="timer">Calculando...</span> <!-- Contador do timer readaptado -->
+@keyframes glow-fade {
+  0% {
+    text-shadow: 2px 2px 0 #ff0000, -2px -2px 0 #00b3ff;
+  }
+  50% {
+    text-shadow: none;
+    opacity: 0.5;
+  }
+  100% {
+    text-shadow: 2px 2px 0 #ff0000, -2px -2px 0 #00b3ff;
+  }
+}
+
+.titulo-3d {
+  color: #00ccff;
+  text-shadow: 0 0 12px #00b3ff, 0 0 24px #0077aa;
+  animation: tituloPulse 3s ease-in-out infinite;
+}
+@keyframes tituloPulse {
+  0%, 100% {
+    text-shadow: 0 0 12px #00b3ff, 0 0 24px #0077aa;
+  }
+  50% {
+    text-shadow: 0 0 24px #00ccff, 0 0 42px #00ccff;
+  }
+}
+
+#logo-projeto {
+  animation: flicker 3.2s infinite;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+</style>
+Projeto AUREON</header>
+<nav>
+<ul>
+<li><button aria-label="Ir para Início do Projeto" data-target="introducao" tabindex="0"><i class="fas fa-meteor"></i>Início</button></li><li><button aria-label="Ir para Sobre o Evento" data-target="evento" tabindex="0"><i class="fas fa-comet"></i>Sobre o Evento</button></li>
+<li><button aria-label="Ir para Tecnologia" data-target="tecnologia" tabindex="0"><i class="fas fa-rocket"></i>Tecnologia</button></li>
+<li><button aria-label="Ir para Personagens" onclick="window.location.href='./menu/personagens.html'" tabindex="0"><i class="fas fa-users"></i>Personagens</button></li>
+<li><button aria-label="Ir para Cenários" onclick="window.location.href='./menu/cenarios.html'" tabindex="0"><i class="fas fa-globe-americas"></i>Cenários</button></li>
+<li><button aria-label="Ir para Impacto Global" data-target="impacto" tabindex="0"><i class="fas fa-skull-crossbones"></i>Impacto Global</button></li>
+<li><button aria-label="Ir para Comunicados" data-target="comunicados" tabindex="0"><i class="fas fa-exclamation-triangle"></i>Comunicados</button></li>
+<li><button aria-label="Ir para Créditos" data-target="creditos" tabindex="0"><i class="fas fa-file-signature"></i>Créditos</button></li>
+
+<style>
+@keyframes flickerText {
+  0%, 18%, 22%, 60%, 100% {
+    opacity: 1;
+  }
+  19%, 21%, 59% {
+    opacity: 0.2;
+  }
+}
+@keyframes tiltShimmer {
+  0% {
+    transform: rotateX(3deg) rotateY(-5deg);
+  }
+  50% {
+    transform: rotateX(-3deg) rotateY(5deg);
+  }
+  100% {
+    transform: rotateX(3deg) rotateY(-5deg);
+  }
+}
+@keyframes sparksAnim {
+  0% {
+    transform: translateX(-10%) translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(110%) translateY(-50%) scale(1.3);
+    opacity: 0;
+  }
+}
+.distrax-text {
+  color: #f5f5f5;
+  text-shadow: 0 0 4px #ffffff, 0 0 10px #ddddff, 0 0 20px #ffffff;
+  animation: flickerText 5s infinite;
+}
+.sparks::before, .sparks::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #ffffff;
+  animation: sparksAnim 2s infinite;
+  top: 50%;
+  left: 0;
+}
+.sparks::after {
+  width: 4px;
+  height: 4px;
+  top: 60%;
+  animation-delay: 1s;
+}
+</style>
+
+
+
+</ul>
+
+<div style="margin-top: auto; padding: 30px 10px 20px;">
+  <button aria-label="Ir para Distrax" onclick="window.location.href='./menu/distrax/ia.html'" style="
+        position: relative;
+        font-size: 1.3rem;
+        padding: 16px 50px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid #999;
+        cursor: pointer;
+        font-family: 'Orbitron', sans-serif;
+        box-shadow: 0 0 14px #aaaaff, 0 0 28px #ffffff, inset 0 0 10px #cccccc33;
+        transform-style: preserve-3d;
+        transform: rotateX(3deg) rotateY(-5deg);
+        animation: tiltShimmer 5s infinite ease-in-out;
+      " tabindex="0">
+    <i class="fas fa-bolt" style="margin-right: 14px; color: #cccccc;"></i>
+    <span class="distrax-text">Dixtrax</span>
+    <span class="sparks"></span>
+  </button>
+</div>
+</nav>
+</div>
+<main id="main-content" style="position:relative; z-index:0;">
+<canvas height="1080" id="main-content-bg" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;" width="1920"></canvas>
+<header aria-label="Alerta de Emergência" id="topbar" role="banner">
+
+<style>
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 6px #fff, 0 0 10px #0ff, 0 0 14px #0ff;
+  }
+  20%, 24%, 55% {
+    opacity: 0.4;
+    text-shadow: none;
+  }
+}
+
+@keyframes glow-fade {
+  0% {
+    text-shadow: 2px 2px 0 #ff0000, -2px -2px 0 #00b3ff;
+  }
+  50% {
+    text-shadow: none;
+    opacity: 0.5;
+  }
+  100% {
+    text-shadow: 2px 2px 0 #ff0000, -2px -2px 0 #00b3ff;
+  }
+}
+
+.titulo-3d {
+  color: #00ccff;
+  text-shadow: 0 0 12px #00b3ff, 0 0 24px #0077aa;
+  animation: tituloPulse 3s ease-in-out infinite;
+}
+@keyframes tituloPulse {
+  0%, 100% {
+    text-shadow: 0 0 12px #00b3ff, 0 0 24px #0077aa;
+  }
+  50% {
+    text-shadow: 0 0 24px #00ccff, 0 0 42px #00ccff;
+  }
+}
+
+#logo-projeto {
+  animation: flicker 3.2s infinite;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+</style>
+
+    ⚠ ALERTA DE IMPACTO IMINENTE ⚠
+  </header>
+
+
+<section aria-labelledby="introducao-title" id="introducao" tabindex="0">
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 30px;">
+    <div style="flex: 1; min-width: 300px;">
+      <h2 id="introducao-title" class="titulo-3d">Início do Projeto</h2>
+      <p style="text-align: justify;"><strong>“Não Olhe Para Cima”</strong> é uma sátira provocativa que retrata a descoberta de um cometa com rota de colisão direta com a Terra. Dois cientistas, ao perceberem a gravidade da ameaça, enfrentam o desafio de alertar o mundo e mobilizar uma resposta eficaz. No entanto, são desacreditados, ignorados pela mídia, ridicularizados nas redes sociais e enfrentam a resistência de um sistema político paralisado por interesses econômicos e vaidades ideológicas.</p>
+      <p style="text-align: justify;">O filme, dirigido por Adam McKay, é um espelho mordaz da sociedade moderna e da forma como lidamos com crises existenciais. Ao mesclar humor ácido com crítica social, a narrativa expõe o colapso da comunicação científica, a banalização da verdade e a fragilidade das estruturas de poder diante de uma ameaça concreta.</p>
+      <p style="text-align: justify;">Toda a estética, estrutura e urgência apresentadas neste site são diretamente inspiradas nesse enredo cinematográfico. O alerta de impacto iminente, os dados simulados e as seções dedicadas à ameaça, personagens e decisões refletem, de maneira simbólica, os mesmos dilemas enfrentados no longa-metragem: ignorar ou agir, negar ou compreender.</p>
+      <p style="text-align: justify;">Este ambiente digital serve como uma extensão reflexiva do filme, provocando o visitante a questionar: se fosse verdade, estaríamos preparados?</p>
+    </div>
+    <div style="flex: 1; min-width: 320px;">
+      <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 0 14px #00b3ff99;">
+        <iframe allowfullscreen="" src="https://www.youtube.com/embed/Lw25J0HFIrc?start=63" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" title="Resumo do filme Não Olhe Para Cima"></iframe>
       </div>
     </div>
-  </nav>
-
-  <div class="main-content">
-    <header>
-      <h1>Projeto AUREON</h1>
-      <p>Uma Simulação Interativa de Crise Global e Resposta Humana</p>
-    </header>
-
-    <main class="container">
-
-      <section id="inicio" class="section-box">
-        <h2 class="titulo-3d">Sobre o Projeto AUREON</h2>
-        <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: center;">
-          <div style="flex: 1; min-width: 300px;">
-            <p class="text-justify">
-              AUREON é mais do que um jogo; é uma simulação interativa imersiva que mergulha você em um cenário de crise global. A humanidade se encontra à beira da aniquilação por uma ameaça cósmica iminente. O projeto foi meticulosamente desenhado para provocar reflexões profundas sobre a complexidade da desinformação, a vitalidade da resposta coletiva e o papel da tecnologia em situações de emergência sem precedentes.
-            </p>
-            <p class="text-justify">
-              Com uma interface responsiva e elementos visuais que evocam um ambiente de centro de comando de alta tecnologia, AUREON combina decisões em tempo real com narrativa ramificada. Cada escolha impacta diretamente o curso da história e o destino da humanidade. O objetivo é engajar, educar e entreter, demonstrando como a gestão de crises pode ser impactada por fatores científicos, políticos e sociais.
-            </p>
-            <p class="text-justify">
-              A inspiração fundamental para AUREON advém do filme <strong>"Não Olhe Para Cima"</strong>. Assim como na sátira que expõe a negação da ciência e a manipulação midiática, nosso jogo explora como a sociedade e seus líderes reagem quando confrontados com uma verdade inconveniente, mas existencial.
-            </p>
-          </div>
-          <div style="flex: 1; min-width: 300px;">
-            <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 0 18px #00ccffbb;">
-              <iframe allowfullscreen src="https://www.youtube.com/embed/Lw25J0HFIrc"
-                      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
-                      title="Resumo do filme Não Olhe Para Cima"></iframe>
-            </div>
-            <div class="destaque-video">
-              ▶️ ASSISTA PARA ENTENDER A INSPIRAÇÃO DO JOGO
-            </div>
-          </div>
-        </div>
-      </section>
-
-            <section id="ia-aureon" class="section-box">
-        <h2>A Inteligência Artificial AUREON</h2>
-        <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: center; flex-direction: row-reverse;">
-          <div style="flex: 1; min-width: 300px;">
-            <p class="text-justify">
-              No coração da simulação AUREON está uma sofisticada Inteligência Artificial, também chamada AUREON. Esta IA é a sua principal ferramenta e adversária simultaneamente. Ela processa dados em tempo real sobre a ameaça cósmica, analisa a resposta global e simula as consequências de cada decisão tomada pelos jogadores.
-            </p>
-            <p class="text-justify">
-              A IA AUREON não é apenas um sistema de cálculo; ela representa a complexidade dos sistemas de informação modernos e a forma como a tecnologia pode tanto auxiliar na tomada de decisões cruciais quanto ser sobrecarregada por desinformação ou falhas políticas. Ela monitora métricas como "Consciência Pública", "Credibilidade Científica" e "Estabilidade Global", que são diretamente influenciadas por suas ações no jogo.
-            </p>
-            <ul class="list-style-none" style="margin-top: 10px; color: #00ccff;">
-              <li>• Análise de dados em tempo real sobre a ameaça.</li>
-              <li>• Simulação de múltiplos cenários baseados em decisões.</li>
-              <li>• Feedback dinâmico sobre métricas de crise (e.g., pânico, confiança).</li>
-              <li>• Adaptação do desafio conforme as escolhas do jogador.</li>
-            </ul>
-          </div>
-          <div style="flex: 1; min-width: 300px;">
-            <div class="image-concept">
-              🌐 Interface da IA AUREON em desenvolvimento: representação de dados e projeções.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="ameaca" class="section-box">
-        <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: center; flex-direction: row-reverse;">
-          <div style="flex: 1; min-width: 300px;">
-            <h2 class="titulo-3d">Ameaça Inicial</h2>
-            <p style="text-align: justify;">
-              Assim como no filme <strong>“Não Olhe Para Cima”</strong>, o surgimento de uma ameaça iminente — neste caso, um corpo celeste em rota de colisão — não é apenas um fenômeno científico, mas um desafio à nossa capacidade coletiva de compreender e agir.
-            </p>
-            <p class="text-justify">
-              As projeções iniciais da IA AUREON são alarmantes: um impacto potencialmente devastador é esperado em menos de 6 meses. Sua missão, como parte da equipe de elite, é navegar pela turbulência de dados conflitantes, agendas políticas e histeria pública. A escolha fundamental se apresenta: divulgar a verdade para o mundo, correndo contra o tempo para mobilizar recursos, ou subestimar a ameaça, arriscando um colapso civilizacional silencioso?
-            </p>
-            <ul class="list-style-none" style="margin-top: 10px; color: #00ccff;">
-              <li>• Cometa de classe "Aniquilador" em rota de colisão.</li>
-              <li>• Janela de ação crítica: menos de 180 dias.</li>
-              <li>• Desafios de comunicação: ignorância, pânico e negacionismo.</li>
-              <li>• A verdade é a primeira vítima: a desinformação como obstáculo.</li>
-            </ul>
-          </div>
-          <div style="flex: 1; min-width: 300px;">
-            <div class="image-concept">
-              🌌 Visualização 3D da ameaça cósmica se aproximando da Terra.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Substituição da imagem em Objetivo do Jogo -->
-      <section id="jogo" class="section-box">
-        <h2>A Jornada do Jogo: Suas Decisões, Nosso Futuro</h2>
-        <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: center; flex-direction: row-reverse;">
-          <div style="flex: 1; min-width: 300px;">
-            <p class="text-justify">
-              Inspirado na intensidade e nos dilemas de <strong>"Não Olhe Para Cima"</strong>, AUREON coloca você na pele de múltiplos agentes: cientistas renomados, conselheiros políticos influentes e líderes de decisão. Sua função central é orquestrar uma resposta global coesa e eficiente diante da iminente catástrofe. O jogo desafia você a convencer potências mundiais e a opinião pública sobre a gravidade da situação, enquanto lida com as complexidades das relações internacionais e a volatilidade da mídia.
-            </p>
-            <p class="text-justify">
-              Cada interação, cada relatório divulgado ou suprimido, cada aliança formada ou desfeita terá repercussões diretas nos desfechos possíveis. Você precisará gerenciar o pânico público, combater a desinformação e garantir que as ações necessárias sejam tomadas. Seu sucesso será medido não apenas pela salvação do planeta, mas pela forma como a sociedade emerge dessa crise: unida e resiliente, ou fragmentada e em colapso. O jogo apresenta uma série de decisões interativas que moldam o narrativa e levam a um dos diversos "Cenários Finais" detalhados em nossa seção dedicada.
-            </p>
-          </div>
-          <div style="flex: 1; min-width: 300px;">
-            <div class="image-concept">
-              🎮 Capturas de tela da interface do jogo: painel de controle, gráficos e opções de diálogo.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="impacto" class="section-box">
-        <h2 style="text-align: center;">Zona de Impacto Detectada</h2>
-        <p class="text-center text-justify" style="color: #00ccffaa;">
-            A simulação da IA AUREON projeta múltiplos pontos de impacto. Ative o indicador no mapa para visualizar a localização mais provável do primeiro contato do cometa. Note que esta projeção é dinâmica e pode mudar com base nas suas decisões ou na evolução da ameaça.
-        </p>
-        <div style="text-align: center; margin-bottom: 15px;">
-          <button id="toggleImpact" class="btn btn-outline-danger" style="font-family: 'Orbitron';">
-            Ativar Projeção de Impacto
-          </button>
-        </div>
-        <div style="display: flex; justify-content: center;">
-          <div style="position: relative; width: 100%; max-width: 700px;">
-            <img src="img/mapamundi2.png" alt="Mapa Mundi" loading="lazy" style="width: 100%; border-radius: 12px;" />
-            <div id="impactPoint" style="
-              position: absolute;
-              top: 42%;
-              left: 59.5%;
-              transform: translate(-50%, -50%);
-              width: 25px;
-              height: 25px;
-              background-color: red;
-              border-radius: 50%;
-              box-shadow: 0 0 15px red, 0 0 25px rgba(255, 0, 0, 0.5);
-              animation: piscar 1s infinite;
-              display: none;
-            "></div>
-          </div>
-        </div>
-      </section>
-
-      <p style="font-size: 0.8rem; color: #00ccff88; text-align: center; font-style: italic; margin-top: 40px;">
-        As imagens utilizadas neste site são meramente ilustrativas e servem como representação conceitual do universo simulado de AUREON.
-      </p>
-
-    </main>
-
-    <footer>
-      © 2025 Projeto AUREON | Uma Simulação Educacional
-    </footer>
   </div>
+</section>
+
+
+<section aria-labelledby="ameaca-title" id="ameaca" tabindex="0">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 30px;">
+<div style="flex: 1; min-width: 300px; position: relative; height: 380px;">
+<div style="width:100%;height:100%;background:#031e31;border:2px dashed transparent;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+<video autoplay="" loop="" muted="" playsinline="" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">
+<source src="./img/meteoro.mp4" type="video/mp4"/>
+          Seu navegador não suporta a tag de vídeo.
+        </video>
 </div>
+</div>
+<div style="flex: 1; min-width: 300px;">
+<h2 id="ameaca-title" class="titulo-3d">Ameaça Detectada</h2>
+<p style="text-align: justify;">Detectado pela astrônoma Kate Dibiasky e confirmado pelo Dr. Randall Mindy, o cometa Dibiasky possui um diâmetro estimado de 9 a 10 quilômetros — grande o suficiente para causar um evento de extinção global.</p>
+<p style="text-align: justify;">Com uma trajetória confirmada de colisão direta com a Terra em pouco mais de seis meses, a descoberta foi inicialmente ignorada por autoridades e pela mídia.</p>
+<p style="text-align: justify;">A velocidade estimada do impacto ultrapassa os 20 km/s, liberando energia equivalente a bilhões de bombas nucleares. A falha em tomar decisões imediatas levou a consequências catastróficas no cenário retratado.</p>
+<p style="text-align: justify;">O cometa simboliza os perigos da desinformação e da negação científica diante de uma crise real.</p>
+</div>
+</div>
+</section>
+
+
+<section aria-labelledby="evento-title" id="evento" tabindex="0">
+  <h2 id="evento-title" class="titulo-3d">Detalhes do Jogo</h2>
+<p style="max-width: 900px; font-size: 1.05rem; line-height: 1.6; text-align: justify;">
+  AUREON é um jogo de simulação estratégica onde o jogador assume o controle de decisões críticas durante uma crise global sem precedentes: a aproximação de um asteroide com potencial de extinção. Inspirado em eventos fictícios e narrativas cinematográficas como <em>“Não Olhe Para Cima”</em>, o jogo recria a tensão e os dilemas enfrentados por governos, cientistas e populações diante de um desastre anunciado. O jogador terá que coordenar ações de defesa, lidar com política internacional, equilibrar decisões éticas e sobreviver à desinformação. Cada ação tomada — ou negligenciada — impacta o destino da civilização.
+</p>
+
+<p style="max-width: 900px; font-size: 1.05rem; line-height: 1.6; text-align: justify;">
+  A jogabilidade combina estratégia em tempo real com gerenciamento de recursos, eventos aleatórios, diplomacia e simulação social avançada. Com múltiplos finais possíveis, AUREON oferece uma experiência única a cada partida. Suas decisões moldam o desenrolar de uma crise global em tempo real, em um mundo vivo onde governos reagem, a mídia influencia e a população entra em pânico. A cada escolha, o jogador confronta o dilema entre sobrevivência, sacrifício e verdade.
+</p>
+
+
+  <div class="cards" role="list">
+    <article class="card typing-card" role="listitem" tabindex="0">
+      <h3>Nome do Asteroide</h3>
+      <p style="text-align: justify;" data-text="Designado como 2001 FO32, o asteroide possui estrutura metálica e núcleo denso, classificado como potencialmente catastrófico. Seu diâmetro pode ultrapassar um quilômetro, tornando-o capaz de gerar destruição em escala continental."></p>
+    </article>
+    <article class="card typing-card" role="listitem" tabindex="0">
+      <h3>Velocidade de Aproximação</h3>
+      <p style="text-align: justify;" data-text="Viajando a mais de 25 km/s, o asteroide atinge velocidade hipersônica. Seu impacto liberaria energia superior à de todas as armas nucleares do mundo somadas, exigindo respostas urgentes e coordenadas."></p>
+    </article>
+    <article class="card typing-card" role="listitem" tabindex="0">
+      <h3>Região de Impacto</h3>
+      <p style="text-align: justify;" data-text="Os dados orbitais indicam um ponto de colisão próximo à costa asiática, onde vivem mais de 2 bilhões de pessoas. O impacto causaria tsunamis, falhas geológicas e colapso climático global."></p>
+    </article>
+  </div>
+</section>
 
 <script>
-  const dataAlvo = new Date("2025-07-01T12:00:00").getTime();
-
-  const intervalo = setInterval(function () {
-    const agora = new Date().getTime();
-    const tempoRestante = dataAlvo - agora;
-
-    const timerElement = document.getElementById("timer");
-
-    if (tempoRestante <= 0) {
-      clearInterval(intervalo);
-      timerElement.innerText = "IMPACTO INICIADO! Missão em andamento...";
-      timerElement.style.color = 'red';
-      timerElement.style.fontWeight = 'bold';
-      timerElement.style.animation = 'piscar 1s infinite';
-      return;
-    }
-
-    const dias = Math.floor(tempoRestante / (1000 * 60 * 60 * 24));
-    const horas = Math.floor((tempoRestante % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutos = Math.floor((tempoRestante % (1000 * 60 * 60)) / (1000 * 60));
-    const segundos = Math.floor((tempoRestante % (1000 * 60)) / 1000);
-
-    const formatado = `${dias} Dias ${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
-    document.getElementById("timer").innerText = formatado;
-  }, 1000);
-
-  const btnToggle = document.getElementById("toggleImpact");
-  const impacto = document.getElementById("impactPoint");
-
-  btnToggle.addEventListener("click", () => {
-    if (impacto.style.display === "none") {
-      impacto.style.display = "block";
-      btnToggle.textContent = "Desativar Impacto";
-      btnToggle.classList.remove('btn-outline-danger');
-      btnToggle.classList.add('btn-outline-success');
-    } else {
-      impacto.style.display = "none";
-      btnToggle.textContent = "Ativar Projeção de Impacto";
-      btnToggle.classList.remove('btn-outline-success');
-      btnToggle.classList.add('btn-outline-danger');
-    }
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.typing-card p');
+    cards.forEach(card => {
+      const text = card.getAttribute('data-text');
+      let i = 0;
+      function type() {
+        if (i < text.length) {
+          card.textContent += text.charAt(i);
+          i++;
+          setTimeout(type, 20);
+        }
+      }
+      type();
+    });
   });
 </script>
 
+
+
+<section aria-labelledby="tecnologia-title" id="tecnologia" tabindex="0">
+  <h2 id="tecnologia-title" class="titulo-3d">Tecnologia Aplicada</h2>
+  <p style="text-align: justify;">
+    Para dar vida ao universo de AUREON, foram utilizadas algumas das ferramentas mais poderosas do desenvolvimento moderno de jogos. A base visual do projeto é construída na <strong>Unreal Engine 5</strong>, um dos motores gráficos mais avançados do mundo. Ela oferece recursos como renderização em tempo real, modelagem com Lumen e Nanite, simulação de física complexa e iluminação dinâmica. A interface de desenvolvimento permite manipular com precisão cada elemento do ambiente, como mostrado na imagem ...
+  </p>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
+  <!-- Imagem: ocupa 60% -->
+  <div style="flex: 0 0 30%; min-width: 280px;">
+    <img src="./img/ue-modelagem.png" alt="Desenvolvimento no Unreal Engine 5"
+         style="width: 100%; border-radius: 12px; box-shadow: 0 0 20px #00b3ff99;" />
+  </div>
+
+  <!-- Texto: ocupa 30% -->
+  <div style="flex: 1; min-width: 300px;">
+    <p style="text-align: justify;">
+      Além disso, a criação e animação de personagens foram feitas com suporte de softwares como o <strong>Blender</strong>,
+      uma plataforma de modelagem 3D open-source amplamente utilizada na indústria. Ele possibilita esculpir, texturizar,
+      animar e exportar personagens em alta qualidade diretamente para motores como a Unreal. Também são utilizados recursos
+      de <strong>IA</strong> para otimização de expressões faciais e sincronização labial.
+    </p>
+    <p style="text-align: justify;">
+      Ferramentas auxiliares como <strong>Substance Painter</strong> para texturização,
+      <strong>Quixel Bridge</strong> para ativos realistas e <strong>Niagara</strong> para efeitos visuais avançados também
+      fazem parte da pipeline de produção do jogo.
+    </p>
+    <p style="text-align: justify;">
+      Para garantir uma experiência imersiva e coerente com a proposta narrativa de AUREON, também foram incorporados sistemas de inteligência artificial que ajustam a ambientação sonora, a iluminação dinâmica e a resposta dos NPCs em tempo real, de acordo com as decisões do jogador. A integração entre ferramentas gráficas e módulos comportamentais da IA cria um mundo vivo, adaptativo e emocionalmente responsivo, onde cada escolha impacta diretamente o desenvolvimento da história e o desfecho da missão.
+    </p>
+    <p style="text-align: justify;">
+      Além disso, o sistema de partículas foi programado para reagir a eventos críticos do jogo, como explosões atmosféricas, fragmentação do asteroide e falhas estruturais globais. Cada efeito visual é cuidadosamente sincronizado com o áudio espacial e com os sistemas de física realista da Unreal Engine, criando uma experiência sensorial altamente envolvente. A combinação de shaders personalizados e pós-processamento garante que o ambiente transmita urgência, beleza e destruição de forma cinematográfica.
+    </p>
+
+  </div>
+</div>
+</section>
+
+
+
+<section aria-labelledby="impacto-title" id="impacto" tabindex="0">
+<h2 id="impacto-title" class="titulo-3d" style="text-align: center;">Impacto Global</h2>
+<div aria-label="Mapa do ponto de impacto no mundo" id="impact-map" role="application" tabindex="0">
+<canvas aria-hidden="true" height="600" id="impact-canvas" width="1200"></canvas> </div>
+<div aria-hidden="true" class="map-tooltip" id="map-tooltip" role="tooltip"></div>
+</section>
+<section aria-labelledby="comunicados-title" id="comunicados" tabindex="0">
+<h2 id="comunicados-title" class="titulo-3d" style="text-align: center;">Avisos Oficiais</h2>
+<div class="cards comunicados" role="list">
+<div aria-atomic="true" aria-live="assertive" class="ticker-container" tabindex="0">
+<div aria-label="Mensagens de alerta da missão" class="ticker-text">
+        ⚠️ Alerta Nível Vermelho: Evacuação imediata recomendada na Ásia e zonas costeiras. • ⚠️ Aviso de Emergência Global: Mobilização total ativada em todos os países aliados. • ⚠️ Mensagem da IA AUREON: Analisando dados meteorológicos e tráfego aéreo para evitar riscos adicionais. •
+      </div>
+</div>
+</div>
+</section>
+<section aria-labelledby="ia-title" id="ia-interativa" tabindex="0">
+<h2 id="ia-title" class="titulo-3d">Terminal AUREON</h2>
+<div aria-label="Terminal de comunicação com IA" id="ai-terminal" tabindex="0"></div>
+<form aria-label="Entrada comando IA" id="ai-input-area">
+<input aria-label="Comando IA" autocomplete="off" id="ai-input" placeholder="Digite seu comando..." spellcheck="false" type="text"/>
+<button aria-label="Enviar comando IA" type="submit">Enviar</button>
+</form>
+</section>
+<section aria-labelledby="creditos-title" id="creditos" tabindex="0">
+<h2 id="creditos-title" class="titulo-3d">Equipe Criadora</h2>
+<p style="text-align: justify;">Equipe fictícia Projeto AUREON - Design inspirado em painéis de comando futuristas e temas cyberpunk <br/>
+    Ícones fornecidos por Font Awesome v6.</p>
+</section>
+</main>
+<canvas aria-hidden="true" id="canvas-bg"></canvas>
+<script crossorigin="anonymous" defer="" src="https://kit.fontawesome.com/a076d05399.js">
+  // --- FUNDO ANIMADO LOCAL NA ÁREA DA BASE ORBITAL ---
+  const orbitalCanvas = document.getElementById("orbital-bg");
+  if (orbitalCanvas) {
+    const octx = orbitalCanvas.getContext("2d");
+    let ow = orbitalCanvas.width;
+    let oh = orbitalCanvas.height;
+    let dots = [];
+
+    for (let i = 0; i < 60; i++) {
+      dots.push({
+        x: Math.random() * ow,
+        y: Math.random() * oh,
+        r: Math.random() * 1.8 + 0.8,
+        speed: Math.random() * 0.4 + 0.3,
+        alpha: Math.random() * 0.6 + 0.2
+      });
+    }
+
+    function drawOrbitalBG() {
+      octx.clearRect(0, 0, ow, oh);
+      dots.forEach(dot => {
+        dot.y -= dot.speed;
+        if (dot.y < 0) dot.y = oh;
+        octx.beginPath();
+        octx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
+        octx.fillStyle = `rgba(0, 204, 255, ${dot.alpha})`;
+        octx.shadowBlur = 5;
+        octx.shadowColor = "#00ccee";
+        octx.fill();
+        octx.shadowBlur = 0;
+      });
+      requestAnimationFrame(drawOrbitalBG);
+    }
+
+    drawOrbitalBG();
+  }
+
+
+// --- FUNDO ANIMADO PARA TODA A ÁREA DE INFORMAÇÕES ---
+const mainCanvas = document.getElementById("main-content-bg");
+if (mainCanvas) {
+  const mctx = mainCanvas.getContext("2d");
+  let mw = mainCanvas.width;
+  let mh = mainCanvas.height;
+  let dots = [];
+
+  function resizeMainCanvas() {
+    mw = mainCanvas.clientWidth;
+    mh = mainCanvas.clientHeight;
+    mainCanvas.width = mw;
+    mainCanvas.height = mh;
+    dots = [];
+    for (let i = 0; i < 100; i++) {
+      dots.push({
+        x: Math.random() * mw,
+        y: Math.random() * mh,
+        r: Math.random() * 2 + 1,
+        speed: Math.random() * 0.4 + 0.3,
+        alpha: Math.random() * 0.5 + 0.3
+      });
+    }
+  }
+
+  function drawMainParticles() {
+    mctx.clearRect(0, 0, mw, mh);
+    dots.forEach(dot => {
+      dot.y -= dot.speed;
+      if (dot.y < 0) dot.y = mh;
+      mctx.beginPath();
+      mctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
+      mctx.fillStyle = `rgba(0, 204, 255, ${dot.alpha})`;
+      mctx.shadowBlur = 6;
+      mctx.shadowColor = "#00ccee";
+      mctx.fill();
+      mctx.shadowBlur = 0;
+    });
+    requestAnimationFrame(drawMainParticles);
+  }
+
+  window.addEventListener('resize', resizeMainCanvas);
+  resizeMainCanvas();
+  drawMainParticles();
+}
+
+</script>
+<script>
+  // --- MENU NAVEGAÇÃO ---
+  document.querySelectorAll('#sidebar nav ul li button').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+      e.preventDefault();
+      const id = btn.getAttribute('data-target');
+      const section = document.getElementById(id);
+      if(section){
+        section.scrollIntoView({behavior:'smooth', block:'start'});
+        section.focus({preventScroll:true});
+      }
+    });
+  });
+
+  // --- ANIMAÇÃO SUAVE AO SCROLL ---
+  const sections = document.querySelectorAll('main section');
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.style.opacity = "1";
+        entry.target.style.transform = "none";
+      }
+    });
+  }, {threshold:0.25});
+  sections.forEach(section=>{
+    section.style.opacity = 0;
+    section.style.transform = 'translateY(40px)';
+    section.style.transition = 'opacity 1s ease, transform 1s ease';
+    observer.observe(section);
+  });
+
+  // --- FUNDO ANIMADO (Canvas) com asteroides e partículas ---
+  const canvas = document.getElementById('canvas-bg');
+  const ctx = canvas.getContext('2d');
+  let w, h;
+  let asteroids = [];
+  let particles = [];
+
+  class Particle {
+    constructor(){
+      this.x = Math.random()*w;
+      this.y = Math.random()*h;
+      this.size = Math.random()*1.4 + 0.4;
+      this.speed = 0.1 + Math.random()*0.3;
+      this.alpha = 0.1 + Math.random()*0.25;
+    }
+    update(){
+      this.y -= this.speed;
+      if(this.y < 0) this.y = h + 5;
+    }
+    draw(){
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(0, 170, 255, ${this.alpha})`;
+      ctx.shadowColor = 'rgba(0, 170, 255, 0.7)';
+      ctx.shadowBlur = 3;
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  class Asteroid {
+    constructor(){
+      this.x = Math.random()*w;
+      this.y = Math.random()*h;
+      this.radius = 15 + Math.random()*12;
+      this.speedX = (Math.random()-0.5)*0.3;
+      this.speedY = 0.3 + Math.random()*0.4;
+      this.angle = Math.random()*Math.PI*2;
+      this.rotationSpeed = (Math.random()-0.5)*0.02;
+    }
+    update(){
+      this.x += this.speedX;
+      this.y += this.speedY;
+      this.angle += this.rotationSpeed;
+      if(this.y > h + this.radius) this.y = -this.radius;
+      if(this.x > w + this.radius) this.x = -this.radius;
+      if(this.x < -this.radius) this.x = w + this.radius;
+    }
+    draw(){
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angle);
+      ctx.strokeStyle = 'rgba(0, 170, 255, 0.7)';
+      ctx.lineWidth = 2;
+      ctx.shadowColor = '#00b3ffcc';
+      ctx.shadowBlur = 6;
+      ctx.beginPath();
+      // desenho geométrico estilo rocha
+      ctx.moveTo(this.radius*0.6, 0);
+      for(let i=1; i<6; i++){
+        const a = i * Math.PI * 2 / 6;
+        const r = this.radius * (0.7 + 0.3*Math.sin(i*3));
+        ctx.lineTo(r*Math.cos(a), r*Math.sin(a));
+      }
+      ctx.closePath();
+      ctx.stroke();
+      ctx.restore();
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  function setup(){
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width = w*window.devicePixelRatio;
+    canvas.height = h*window.devicePixelRatio;
+    canvas.style.width = w+'px';
+    canvas.style.height = h+'px';
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+    asteroids = [];
+    particles = [];
+
+    for(let i=0; i<19; i++){
+      asteroids.push(new Asteroid());
+    }
+    for(let i=0; i<120; i++){
+      particles.push(new Particle());
+    }
+  }
+
+  function animate(){
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(p => {
+      p.update(); p.draw();
+    });
+    asteroids.forEach(a => {
+      a.update(); a.draw();
+    });
+    requestAnimationFrame(animate);
+  }
+  window.addEventListener('resize', setup);
+  setup();
+  animate();
+
+  // --- MAPA DO MUNDO SIMPLES ---
+  const mapCanvas = document.getElementById('impact-canvas');
+  const mapCtx = mapCanvas.getContext('2d');
+
+  // Continentes simplificados (array de polígonos)
+  const polygons = [
+    // Américas
+    [{x:110,y:340},{x:160,y:270},{x:210,y:230},{x:210,y:190},{x:160,y:165},{x:140,y:120},{x:90,y:130},{x:60,y:200}],
+    // Europa + Africa
+    [{x:330,y:140},{x:370,y:130},{x:430,y:165},{x:460,y:220},{x:430,y:235},{x:390,y:230},{x:350,y:195}],
+    [{x:380,y:250},{x:420,y:240},{x:440,y:300},{x:410,y:330},{x:370,y:300}],
+    // Ásia
+    [{x:450,y:150},{x:520,y:160},{x:580,y:220},{x:615,y:260},{x:600,y:310},{x:555,y:320},{x:510,y:290}]
+  ];
+  // Impacto (Ásia aproximada)
+  const impact = { x: 735, y: 265 };
+
+// Criar a imagem do mapa fora da função
+const mapImg = new Image();
+mapImg.src = './img/mapamundi2.png'; // Troque para .jpg se necessário
+
+function drawMap() {
+  const W = mapCanvas.width;
+  const H = mapCanvas.height;
+  mapCtx.clearRect(0, 0, W, H);
+
+  // Fundo com mapa
+  if (mapImg.complete) {
+    mapCtx.drawImage(mapImg, 0, 0, W, H);
+  }
+
+  // Desenho do impacto com camadas suaves
+  const t = Date.now() / 1000;
+  const pulse = 5 * Math.abs(Math.sin(t * 2)); // efeito pulsante
+
+  const cx = 735; // coordenada X do impacto
+  const cy = 265; // coordenada Y do impacto
+
+  const rings = [
+    { r: 45 + pulse, a: 0.15 },
+    { r: 30 + pulse, a: 0.25 },
+    { r: 20 + pulse, a: 0.4 }
+  ];
+
+  rings.forEach(({ r, a }) => {
+    mapCtx.beginPath();
+    mapCtx.fillStyle = `rgba(255, 0, 0, ${a})`;
+    mapCtx.arc(cx, cy, r, 0, Math.PI * 2);
+    mapCtx.fill();
+  });
+
+  // Ponto central mais intenso
+  mapCtx.beginPath();
+  mapCtx.shadowColor = `rgba(255, 0, 0, 0.8)`;
+  mapCtx.shadowBlur = 16;
+  mapCtx.fillStyle = '#ff0000';
+  mapCtx.arc(cx, cy, 6, 0, Math.PI * 2);
+  mapCtx.fill();
+  mapCtx.shadowBlur = 0;
+}
+
+
+  function animateMap(){
+    drawMap();
+    requestAnimationFrame(animateMap);
+  }
+  animateMap();
+
+  // Tooltip mapa
+  const mapContainer = document.getElementById('impact-map');
+  const tooltip = document.getElementById('map-tooltip');
+  mapContainer.addEventListener('mousemove', e => {
+    const rect = mapContainer.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    let dx = x - impact.x * (rect.width / 900);
+    let dy = y - impact.y * (rect.height / 460);
+    let dist = Math.sqrt(dx*dx + dy*dy);
+    if(dist < 40){
+      tooltip.textContent = "Ponto de Impacto Confirmado (Ásia)";
+      tooltip.style.left = `${e.pageX + 14}px`;
+      tooltip.style.top = `${e.pageY + 14}px`;
+      tooltip.classList.add('visible');
+      tooltip.setAttribute('aria-hidden', 'false');
+    } else {
+      tooltip.classList.remove('visible');
+      tooltip.setAttribute('aria-hidden', 'true');
+    }
+  });
+  mapContainer.addEventListener('mouseout', () => {
+    tooltip.classList.remove('visible');
+    tooltip.setAttribute('aria-hidden', 'true');
+  });
+
+  // --- IA INTERATIVA COM TIPO DE DIGITAÇÃO SIMULADA ---
+  const aiTerminal = document.getElementById('ai-terminal');
+  const aiInput = document.getElementById('ai-input');
+  const aiForm = document.getElementById('ai-input-area');
+
+  const aiInitMessage = "> Seja bem-vindo ao sistema AUREON. Para ajuda, digite \"ajuda\".\n";
+
+  // Limpa e inicia o terminal com texto inicial
+  function resetTerminal(){
+    aiTerminal.textContent = "";
+    typeText(aiInitMessage);
+  }
+  resetTerminal();
+
+  const aiCommands = {
+    ajuda: `Comandos disponíveis:
+- status: Mostra status atual da missão
+- equipes: Lista membros da equipe
+- tecnico: Dados técnicos do asteroide
+- cenarios: Resumo dos cenários de impacto
+- sair: Finaliza sessão e reinicia terminal`,
+    status: "Missão AUREON: Rastreamento ativo, impacto iminente detectado. Recomendação: evacuação imediata.",
+    equipes: "Equipe ativa:\n- Dr. Helena Koslov\n- Capitão João Mendes\n- IA AUREON",
+    tecnico: "Asteroide 2001 FO32\nDiâmetro: 500-1000m\nVelocidade: 25 km/s\nTrajetória: Aproximação Ásia",
+    cenarios: "Cenários possíveis:\n1. Desvio parcial\n2. Impacto localizado\n3. Impacto total global",
+    sair: "Sessão finalizada. Reiniciando terminal..."
+  };
+
+  // Simula a digitação do texto de forma gradual
+  function typeText(text, speed = 35, callback) {
+    let i = 0;
+    function typeChar() {
+      if (i < text.length) {
+        aiTerminal.textContent += text.charAt(i);
+        aiTerminal.scrollTop = aiTerminal.scrollHeight;
+        i++;
+        setTimeout(typeChar, speed);
+      } else if (callback) {
+        callback();
+      }
+    }
+    typeChar();
+  }
+
+  // Faz a resposta da IA ser digitada com delay
+  async function respondWithTyping(text) {
+    return new Promise(resolve => {
+      aiTerminal.textContent += "\n";
+      let i = 0;
+      let addingText = "";
+      function typeNext() {
+        if (i < text.length) {
+          addingText += text.charAt(i);
+          aiTerminal.textContent = aiTerminal.textContent.trimEnd() + "\n" + addingText + "|";
+          aiTerminal.scrollTop = aiTerminal.scrollHeight;
+          i++;
+          setTimeout(typeNext, 30);
+        } else {
+          // Remove cursor pipe
+          aiTerminal.textContent = aiTerminal.textContent.replace(/\|$/, "");
+          resolve();
+        }
+      }
+      typeNext();
+    });
+  }
+
+  // Evento submit do form IA
+  aiForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const commandRaw = aiInput.value.trim();
+    if (!commandRaw) return;
+    const command = commandRaw.toLowerCase();
+
+    // Mostrar comando do usuário
+    aiTerminal.textContent += `\n> ${commandRaw}`;
+    aiTerminal.scrollTop = aiTerminal.scrollHeight;
+
+    aiInput.value = "";
+    aiInput.disabled = true;
+    aiForm.querySelector('button').disabled = true;
+
+    let response = aiCommands[command] || `Comando inválido: '${command}'. Digite 'ajuda' para a lista de comandos.`;
+    await respondWithTyping(response);
+
+    if (command === 'sair') {
+      // Apaga tudo depois de 2seg e reinicia terminal
+      setTimeout(() => {
+        resetTerminal();
+        aiInput.disabled = false;
+        aiForm.querySelector('button').disabled = false;
+        
+      }, 2000);
+    } else {
+      aiInput.disabled = false;
+      aiForm.querySelector('button').disabled = false;
+      
+    }
+  });
+
+  // Focando input IA automaticamente para facilitar
+  
+
+  // --- FUNDO ANIMADO LOCAL NA ÁREA DA BASE ORBITAL ---
+  const orbitalCanvas = document.getElementById("orbital-bg");
+  if (orbitalCanvas) {
+    const octx = orbitalCanvas.getContext("2d");
+    let ow = orbitalCanvas.width;
+    let oh = orbitalCanvas.height;
+    let dots = [];
+
+    for (let i = 0; i < 60; i++) {
+      dots.push({
+        x: Math.random() * ow,
+        y: Math.random() * oh,
+        r: Math.random() * 1.8 + 0.8,
+        speed: Math.random() * 0.4 + 0.3,
+        alpha: Math.random() * 0.6 + 0.2
+      });
+    }
+
+    function drawOrbitalBG() {
+      octx.clearRect(0, 0, ow, oh);
+      dots.forEach(dot => {
+        dot.y -= dot.speed;
+        if (dot.y < 0) dot.y = oh;
+        octx.beginPath();
+        octx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
+        octx.fillStyle = `rgba(0, 204, 255, ${dot.alpha})`;
+        octx.shadowBlur = 5;
+        octx.shadowColor = "#00ccee";
+        octx.fill();
+        octx.shadowBlur = 0;
+      });
+      requestAnimationFrame(drawOrbitalBG);
+    }
+
+    drawOrbitalBG();
+  }
+
+
+// --- FUNDO ANIMADO PARA TODA A ÁREA DE INFORMAÇÕES ---
+const mainCanvas = document.getElementById("main-content-bg");
+if (mainCanvas) {
+  const mctx = mainCanvas.getContext("2d");
+  let mw = mainCanvas.width;
+  let mh = mainCanvas.height;
+  let dots = [];
+
+  function resizeMainCanvas() {
+    mw = mainCanvas.clientWidth;
+    mh = mainCanvas.clientHeight;
+    mainCanvas.width = mw;
+    mainCanvas.height = mh;
+    dots = [];
+    for (let i = 0; i < 100; i++) {
+      dots.push({
+        x: Math.random() * mw,
+        y: Math.random() * mh,
+        r: Math.random() * 2 + 1,
+        speed: Math.random() * 0.4 + 0.3,
+        alpha: Math.random() * 0.5 + 0.3
+      });
+    }
+  }
+
+  function drawMainParticles() {
+    mctx.clearRect(0, 0, mw, mh);
+    dots.forEach(dot => {
+      dot.y -= dot.speed;
+      if (dot.y < 0) dot.y = mh;
+      mctx.beginPath();
+      mctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
+      mctx.fillStyle = `rgba(0, 204, 255, ${dot.alpha})`;
+      mctx.shadowBlur = 6;
+      mctx.shadowColor = "#00ccee";
+      mctx.fill();
+      mctx.shadowBlur = 0;
+    });
+    requestAnimationFrame(drawMainParticles);
+  }
+
+  window.addEventListener('resize', resizeMainCanvas);
+  resizeMainCanvas();
+  drawMainParticles();
+}
+
+</script>
 </body>
 </html>
