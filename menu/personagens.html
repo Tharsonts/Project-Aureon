@@ -1,213 +1,1022 @@
-
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Personagens do Projeto AUREON</title>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background: linear-gradient(to bottom, #0a0f1a, #000);
-      font-family: 'Share Tech Mono', monospace;
-      margin: 0;
-      padding: 40px 20px;
-      color: #fff;
-      text-align: center;
+
+<!-- saved from url=(0075)file:///C:/Users/User/AppData/Local/Temp/Rar$EXa6212.20181/personagens.html -->
+<html lang="pt-BR"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Personagens - Projeto AUREON</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Exo+2&display=swap');
+
+  /* Reset */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+  }
+  html, body {
+    height: 100%;
+    font-family: 'Exo 2', sans-serif;
+    background:
+      radial-gradient(circle at center, #01040f 0%, #0d1a2b 90%);
+    color: #a9c8ff;
+    overflow: hidden;
+    user-select: none;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+  }
+
+  /* Starfield background canvas */
+  #bgCanvas {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, #000011 0%, #000014 85%);
+    filter: drop-shadow(0 0 5px #3a57ffaa);
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url('data:image/svg+xml;utf8,<svg width="6" height="6" fill-opacity="0.03" xmlns="http://www.w3.org/2000/svg"><circle cx="3" cy="3" r="2" fill="%23ffffff"/></svg>');
+    background-repeat: repeat;
+    animation: noiseBackground 12s infinite;
+    z-index: -1;
+  }
+  @keyframes noiseBackground {
+    0% {background-position: 0 0;}
+    100% {background-position: 600px 600px;}
+  }
+
+  /* Header with glitch animated text */
+  header {
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #081231;
+    box-shadow: 0 2px 12px #144cabaa;
+    user-select: text;
+    position: relative;
+    z-index: 100;
+  }
+  header h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.6rem;
+    color: #2a68db;
+    animation: glitchAnimation 2.2s infinite linear alternate-reverse;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-shadow: 0 0 15px #4a92ff, 0 0 30px #316edb;
+    user-select: text;
+  }
+  @keyframes glitchAnimation {
+    0% {
+      text-shadow:
+      2px 0 blue, -2px 0 red;
+      transform: translate(0, 0);
     }
-    h1 {
-      color: #00d9ff;
-      font-size: 2.5em;
-      margin-bottom: 40px;
+    20% {
+      text-shadow:
+      3px 0 cyan, -1px 0 magenta;
+      transform: translate(-1px, 1px);
     }
-    .cards-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
+    40% {
+      text-shadow:
+      1px 0 cyan, -3px 0 magenta;
+      transform: translate(1px, -1px);
     }
-    .card {
-      background: rgba(0, 10, 20, 0.8);
-      border: 2px solid #00d9ff;
-      border-radius: 20px;
-      width: 260px;
-      height: 370px;
-      perspective: 1000px;
-      transition: transform 0.5s;
+    60% {
+      text-shadow:
+      2px 0 blue, -2px 0 red;
+      transform: translate(0, 0);
     }
-    .card-inner {
-      position: relative;
+    80% {
+      text-shadow:
+      3px 0 cyan, -1px 0 magenta;
+      transform: translate(-1px, 1px);
+    }
+    100% {
+      text-shadow:
+      1px 0 cyan, -3px 0 magenta;
+      transform: translate(1px, -1px);
+    }
+  }
+
+  /* PSP device container */
+  .psp-device {
+    position: relative;
+    width: 960px;
+    max-width: 95vw;
+    height: 580px;
+    margin: 50px auto 80px auto;
+    background:
+      linear-gradient(135deg, #050a20, #121934);
+    border-radius: 48px;
+    box-shadow:
+      inset 0 0 100px #2940f4cc,
+      0 0 70px #1a58f9cc;
+    overflow: hidden;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* PSP screen */
+  .psp-screen {
+    position: relative;
+    flex-grow: 1;
+    background: linear-gradient(180deg, #060b23 0%, #1a237e 100%);
+    margin: 48px 56px;
+    border-radius: 48px;
+    box-shadow:
+      inset 0 5px 30px #000e6daa,
+      inset 0 -10px 25px #1423a1aa;
+    overflow: hidden;
+    display: flex;
+  }
+
+  /* Timeline sidebar on left */
+  .timeline-sidebar {
+    width: 320px;
+    background: #0a1551;
+    border-right: 2px solid #3a59ffcc;
+    display: flex;
+    flex-direction: column;
+    padding: 25px 18px 25px 25px;
+    overflow-y: auto;
+    box-shadow: inset 5px 0 25px #2245ffaa;
+  }
+  .timeline-sidebar::-webkit-scrollbar {
+    width: 10px;
+  }
+  .timeline-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .timeline-sidebar::-webkit-scrollbar-thumb {
+    background: #516defcc;
+    border-radius: 12px;
+  }
+
+  /* Timeline vertical line in sidebar */
+  .timeline-vertical-line {
+    position: absolute;
+    top: 25px; bottom: 25px;
+    left: 120px;
+    width: 4px;
+    background: linear-gradient(180deg, #4b7aff 0%, #1e48ff 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 12px #2d55ffbb;
+    z-index: 1;
+  }
+
+  /* Timeline items container */
+  .timeline-items {
+    position: relative;
+    width: 180px;
+    margin-left: 60px;
+  }
+
+  /* Timeline item */
+  .timeline-item {
+    cursor: pointer;
+    padding: 14px 0 14px 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-radius: 16px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    outline-offset: 5px;
+    color: #aacfff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    user-select: none;
+    line-height: 1.2;
+    z-index: 10;
+  }
+
+  .timeline-item[aria-selected="true"] {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  /* Connectors vertical dots and lines */
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -63px;
+    top: 19px;
+    width: 22px;
+    height: 22px;
+    background: #2b54ff;
+    border-radius: 50%;
+    border: 3px solid #83a5ffcc;
+    box-shadow:
+      0 0 15px #6e92faff,
+      inset 0 0 12px #23498fbb;
+    transition: background 0.3s ease;
+    z-index: 20;
+  }
+  .timeline-item:last-child::after {
+    display: none;
+  }
+  .timeline-item::after {
+    content: "";
+    position: absolute;
+    left: -54px;
+    top: 50px;
+    width: 4px;
+    height: calc(100% - 44px);
+    background: #3c6affcc;
+    border-radius: 2px;
+    box-shadow: 0 0 8px #799bffbb;
+    z-index: 15;
+  }
+
+  /* Circular thumbnail */
+  .timeline-thumb {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: #152649;
+    box-shadow: inset 0 0 6px #2990ffcc;
+    color: #70a3ffcc;
+    font-family: 'Orbitron', monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 52px;
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .timeline-item[aria-selected="true"] .timeline-thumb {
+    background: linear-gradient(135deg, #5389ff, #1d51cf);
+    color: #dee8ff;
+    box-shadow:
+      0 0 35px #4e6fff,
+      inset 0 0 18px #2980ff;
+  }
+
+  /* Detail panel */
+  .detail-panel {
+    flex-grow: 1;
+    background: #102050ee;
+    border-radius: 0 48px 48px 0;
+    margin: 25px 25px 25px 0;
+    box-shadow:
+      inset 0 0 35px #2957ffaa,
+      0 0 42px #2957ffcc;
+    color: #b3ccffdd;
+    padding: 38px 48px 48px 48px;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-panel::-webkit-scrollbar {
+    width: 10px;
+  }
+  .detail-panel::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .detail-panel::-webkit-scrollbar-thumb {
+    background: #4f7cffcc;
+    border-radius: 10px;
+  }
+
+  /* Detail content */
+  .detail-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 3.6rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #4b7aff;
+    text-shadow:
+      0 0 20px #2a53d1bb;
+  }
+  .detail-role {
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    color: #8caaffcc;
+  }
+  .detail-message {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    user-select: text;
+    background: linear-gradient(135deg, #2e4798dd, #1b358ccc);
+    border-radius: 35px 20px 35px 35px;
+    padding: 32px 38px;
+    box-shadow:
+      inset 0 0 45px #2957ffcc;
+    position: relative;
+    color: #d2e7ffdd;
+    text-shadow: 0 0 10px #3c6affcc;
+  }
+
+  /* Message bubble pointer */
+  .detail-message::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 48px;
+    width: 0; 
+    height: 0;
+    border: 25px solid transparent;
+    border-top-color: #1b358ccc;
+    border-bottom: 0;
+    margin-left: -12.5px;
+    margin-bottom: -25px;
+  }
+
+  /* Close button */
+  button#closeButton {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: transparent;
+    border: none;
+    font-size: 2.8rem;
+    color: #5a84ffcc;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.3s ease;
+  }
+  button#closeButton:hover,
+  button#closeButton:focus-visible {
+    color: #98bdff;
+    outline: none;
+  }
+
+  /* Responsive */
+  @media (max-width:1080px) {
+    .psp-device {
+      width: 90vw;
+      height: 520px;
+    }
+    .detail-panel {
+      margin: 25px 18px 25px 18px;
+    }
+    .timeline-sidebar {
+      width: 280px;
+    }
+  }
+  @media (max-width: 720px) {
+    .content-wrapper {
+      grid-template-columns: 1fr !important;
+      height: auto !important;
+    }
+    .psp-device {
+      height: auto;
+      max-width: 90vw;
+      border-radius: 32px;
+      padding-bottom: 100px;
+      margin: 20px auto 60px;
+    }
+    .timeline-sidebar {
       width: 100%;
-      height: 100%;
-      transition: transform 0.8s;
-      transform-style: preserve-3d;
-    }
-    .card:hover .card-inner {
-      transform: rotateY(180deg);
-    }
-    .card-front, .card-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 20px;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-    .card-front {
-      background-color: #111;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .card-front img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 3px solid #00d9ff;
-      margin-bottom: 15px;
-      object-fit: cover;
-    }
-    .card-front h2 {
-      font-size: 1.1em;
-      color: #00d9ff;
+      height: 160px;
+      border-radius: 0 0 32px 32px;
+      border-right: none;
+      border-bottom: 4px solid #3c6affcc;
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 16px 10px;
+      box-shadow:none;
       margin: 0;
     }
-    .card-front p {
-      margin: 5px 0 0;
-      font-size: 0.85em;
+    .timeline-items {
+      flex-direction: row;
+      gap: 16px;
+      margin-left: 0;
+      width: auto;
+      padding: 0 10px;
+      justify-content: flex-start;
     }
-    .card-back {
-      background-color: #001f33;
-      color: #ccc;
-      transform: rotateY(180deg);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      font-size: 0.85em;
-      padding: 20px;
-      text-align: left;
+    .timeline-item {
+      width: 68px !important;
+      height: 68px !important;
+      border-radius: 16px;
+      border-left: none !important;
+      box-shadow: 0 0 20px #3a6fff99 inset;
+      padding: 4px 4px;
     }
-    .card-back p {
-      margin: 4px 0;
+    .timeline-item[aria-selected="true"] {
+      background-color: #1d2e62cc;
+      box-shadow: 0 0 30px #3a6fffdd inset;
+      transform: scale(1.1);
     }
-  </style>
-</head>
+    .timeline-name {
+      display: none;
+    }
+    .detail-panel {
+      border-radius: 28px;
+      box-shadow: 0 0 40px #245bffbb;
+      margin: 20px 10px 40px;
+      height: 100vh;
+      max-height: 600px;
+      overflow-y: auto;
+      padding: 30px 25px;
+      font-size: 1rem;
+    }
+    .detail-name {
+      font-size: 2.8rem;
+    }
+    .detail-role {
+      font-size: 1.1rem;
+    }
+    .detail-message {
+      font-size: 1rem;
+      padding: 20px 26px;
+      border-radius: 28px;
+    }
+  }
+
+.timeline-item { margin-bottom: 32px !important; }
+.character-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.character-image {
+  width: 150px;  /* Tamanho do quadrado */
+  height: 150px;
+  background: #1e2d45;
+  border-radius: 12px;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px #00f0ff66;
+  background-image: url('path-to-image.jpg'); /* Defina o caminho para a imagem */
+  background-size: cover;
+  background-position: center;
+}
+
+.character-info {
+  flex: 1;
+}
+
+.character-info h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.4rem;
+  color: #00d2ff;
+  margin-bottom: 4px;
+}
+
+.character-info p {
+  font-size: 1rem;
+  color: #cbd9f2;
+  line-height: 1.4;
+}
+
+.character-detail {
+  display: flex;
+  gap: 28px;
+  margin-top: 20px;
+  align-items: flex-start;
+  visibility: hidden;
+}
+.timeline-menu .item {
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  background: #0c1a2a;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+.timeline-menu .item.selected {
+  background: #00d2ff33;
+}
+</style>
+<link href="./personagens3_files/all.min.css" rel="stylesheet"/>
+<style id="operaUserStyle" type="text/css"></style></head>
 <body>
-  <h1>Personagens Principais do Projeto AUREON</h1>
-<div class="cards-container">
-  <div class="card">
-    <div class="card-inner">
-      <div class="card-front">
-        <img src="./img-person/alan.jpg" alt="Dr. Alan">
-        <h2>Dr. Alan C. Rios</h2>
-        <p>Astrofísico</p>
-      </div>
-      <div class="card-back">
-        <p><strong>Idade:</strong> 58 anos</p>
-        <p><strong>Nacionalidade:</strong> Brasil</p>
-        <p><strong>Sobre:</strong> Referência global em dinâmicas orbitais, é responsável por interpretar os dados que apontam uma ameaça vinda do espaço.</p>
-        <p><strong>Função:</strong> Toma decisões críticas a partir de simulações científicas de impacto.</p>
-        <p><strong>Frase:</strong> "A mente que observa o cosmos."</p>
-        <p><strong>Baseado em:</strong> Dr. Randall Mindy (Leonardo DiCaprio)</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-inner">
-      <div class="card-front">
-        <img src="./img-person/jennifer.jpg" alt="Dra. Eva">
-        <h2>Dra. Eva Chen</h2>
-        <p>Engenheira Espacial</p>
-      </div>
-      <div class="card-back">
-        <p><strong>Idade:</strong> 42 anos</p>
-        <p><strong>Nacionalidade:</strong> China</p>
-        <p><strong>Sobre:</strong> Jovem pesquisadora que detecta os primeiros sinais do corpo celeste. Tem papel decisivo na denúncia e comunicação da crise.</p>
-        <p><strong>Função:</strong> Analisa variáveis técnicas e tecnológicas com frieza e coragem.</p>
-        <p><strong>Frase:</strong> "A esperança da humanidade."</p>
-        <p><strong>Baseado em:</strong> Kate Dibiasky (Jennifer Lawrence)</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-inner">
-      <div class="card-front">
-        <img src="./img-person/teddy.jpg" alt="Dra. Lúcia">
-        <h2>Dra. Lúcia Mendes</h2>
-        <p>Bióloga/Ecóloga</p>
-      </div>
-      <div class="card-back">
-        <p><strong>Idade:</strong> 39 anos</p>
-        <p><strong>Nacionalidade:</strong> Brasil</p>
-        <p><strong>Sobre:</strong> Atua como ponte entre a ciência e os órgãos de decisão. Seu foco é o impacto sobre o meio ambiente e a biosfera.</p>
-        <p><strong>Função:</strong> Levanta alertas sobre as consequências ecológicas do evento global.</p>
-        <p><strong>Frase:</strong> "Ouça a Terra enquanto ela ainda fala."</p>
-        <p><strong>Baseado em:</strong> Dr. Teddy Oglethorpe (Rob Morgan)</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-inner">
-      <div class="card-front">
-        <img src="./img-person/Orlean.jpg" alt="Pres. Emília">
-        <h2>Pres. Emília Dawson</h2>
-        <p>Líder Global</p>
-      </div>
-      <div class="card-back">
-        <p><strong>Idade:</strong> 61 anos</p>
-        <p><strong>Nacionalidade:</strong> EUA</p>
-        <p><strong>Sobre:</strong> Figura política carismática que minimiza a ameaça para proteger interesses pessoais e eleitorais.</p>
-        <p><strong>Função:</strong> Decide o que será divulgado e como o mundo deve reagir — ou ignorar.</p>
-        <p><strong>Frase:</strong> "Diplomacia sob pressão."</p>
-        <p><strong>Baseado em:</strong> Presidente Orlean (Meryl Streep)</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-inner">
-      <div class="card-front">
-        <img src="./img-person/peter.jpg" alt="Dr. Silas Vahn">
-        <h2>Dr. Silas Vahn</h2>
-        <p>Empresário Tecnológico</p>
-      </div>
-      <div class="card-back">
-        <p><strong>Idade:</strong> 63 anos</p>
-        <p><strong>Nacionalidade:</strong> EUA</p>
-        <p><strong>Sobre:</strong> Magnata da tecnologia que propõe soluções comerciais para a crise, guiado por previsões de algoritmos e interesses econômicos.</p>
-        <p><strong>Função:</strong> Influencia decisões críticas com base em seus sistemas de previsão comportamental.</p>
-        <p><strong>Frase:</strong> "Cada pedra no céu é uma oportunidade."</p>
-        <p><strong>Baseado em:</strong> Peter Isherwell (Mark Rylance)</p>
-      </div>
-    </div>
-  </div>
+<div id="introScreen" style="
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: radial-gradient(circle, #01040f, #0d1a2b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: 'Orbitron', monospace;
+  font-size: 2rem;
+  color: #4aecff;
+  text-align: center;
+">
+<div id="introText" style="border-right: 2px solid #4aecff; white-space: nowrap; overflow: hidden;"></div>
+<button id="startButton" style="
+    display: none;
+    margin-top: 20px;
+    font-size: 1.6rem;
+    background: none;
+    border: 2px solid #4aecff;
+    color: #4aecff;
+    padding: 12px 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'Orbitron', monospace;
+    transition: background 0.3s ease, color 0.3s ease;
+  ">✕ Iniciar</button>
 </div>
+<header><h1>Personagens do Projeto AUREON</h1></header>
+<div aria-label="" class="psp-device" role="main" style="width: 1240px;">
+<div class="content-wrapper" style="display:flex; height:100%;">
+<nav aria-label="Índice lateral de personagens" class="timeline-sidebar" role="list" tabindex="0">
+<div class="timeline-line"></div>
+<div class="timeline-items" role="list">
+<div aria-label="" aria-selected="true" class="timeline-item selected" data-index="0" role="listitem" tabindex="0" title="Dr. Alan C. Rios">
+<div aria-hidden="true" class="timeline-thumb">A.C.R</div>
+<span class="timeline-name">Dr. Alan C. Rios</span>
+</div>
+<div aria-label="" class="timeline-item" data-index="1" role="listitem" tabindex="0" title="Dra. Eva Chen">
+<div aria-hidden="true" class="timeline-thumb">E.C</div>
+<span class="timeline-name">Dra. Eva Chen</span>
+</div>
+<div aria-label="" class="timeline-item" data-index="2" role="listitem" tabindex="0" title="Dra. Lúcia Mendes">
+<div aria-hidden="true" class="timeline-thumb">L.M</div>
+<span class="timeline-name">Dra. Lúcia Mendes</span>
+</div>
+<div aria-label="" class="timeline-item" data-index="3" role="listitem" tabindex="0" title="Presidente Emilia Dawson">
+<div aria-hidden="true" class="timeline-thumb">E.D</div>
+<span class="timeline-name">Presidente Emilia Dawson</span>
+</div>
+<div aria-label="" class="timeline-item" data-index="4" role="listitem" tabindex="0" title="Dr. Silas Vahn">
+<div aria-hidden="true" class="timeline-thumb">S.V</div>
+<span class="timeline-name">Dr. Silas Vahn</span>
+</div>
+</div>
+</nav>
+<section aria-label="Detalhes do personagem selecionado" aria-live="polite" class="detail-panel" tabindex="0">
+<h2 class="detail-name">Dr. Alan C. Rios</h2>
+<h3 class="detail-role">Líder da pesquisa astronômica</h3>
+<div class="character-topics">
+<p><strong>Trabalho:</strong> <span class="detail-job">Astrofísico</span></p>
+<p><strong>Idade:</strong> <span class="detail-age">46</span></p>
+<p><strong>Nacionalidade:</strong> <span class="detail-nation">Brasil</span></p>
+<p><strong>Resumo:</strong> <span class="tagline">A mente que observa o cosmos.</span></p>
+</div>
+</section>
+</div>
+<!-- PSP Controls: decorative -->
+<div aria-hidden="true" class="psp-controls"><div class="psp-button" id="psp-back" style="position: relative;"><span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size: 20px; color: #4aecff; text-shadow: 0 0 10px #45eaffcc;">⏴</span><div style="position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: #7ecbff; text-shadow: 0 0 6px #247fff;">voltar</div></div>
 
-  <a href="../index.html" class="back-button">⬅ Voltar para o Início</a>
+<div class="psp-dpad">
+<span>▲</span><span>▼</span>
+</div>
+<div class="psp-button" id="psp-confirm" style="position: relative;"><span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size: 24px; color: #4aecff; text-shadow: 0 0 10px #45eaffcc;">✕</span><div style="position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: #7ecbff; text-shadow: 0 0 6px #247fff;">confirmar</div></div></div>
+</div>
+<style>
+  /* PSP control styling */
+  .psp-controls {
+    width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 40px 30px;
+    user-select: none;
+    perspective: 1100px;
+  }
+  .psp-button {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(145deg, #293a74, #1a2d57);
+    border-radius: 50%;
+    box-shadow:
+      0 12px 10px #0d1454,
+      inset 0 3px 7px #2950a6;
+    cursor: default;
+    transition: background 0.3s ease;
+  }
+  .psp-button:active {
+    background: linear-gradient(145deg, #1a2d57, #293a74);
+  }
+  .psp-button.circle {
+    box-shadow:
+      0 12px 10px #331d3b,
+      inset 0 3px 7px #7e336d;
+  }
+  .psp-button.circle:before {
+    content: "●";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -52%);
+    color: #ef54ff;
+    font-size: 18px;
+    font-weight: 800;
+    text-shadow: 0 0 12px #ff4aff99;
+  }
+  .psp-button.cross:before {
+    content: "✕";
+    font-size: 26px;
+    color: #4aecff;
+    text-shadow: 0 0 20px #45eaffbb;
+  }
+  .psp-button.cross {
+    box-shadow:
+      0 12px 10px #15464e,
+      inset 0 3px 7px #4aecff88;
+    color: #4aecff;
+  }
+  .psp-button.square:before {
+    content: "■";
+    font-size: 26px;
+    color: #f193ff;
+    text-shadow: 0 0 20px #dc7affaa;
+  }
+  .psp-button.square {
+    box-shadow:
+      0 12px 10px #3b2261,
+      inset 0 3px 7px #f193ff99;
+    color: #f193ff;
+  }
+  .psp-button.triangle:before {
+    content: "▲";
+    font-size: 26px;
+    color: #fcff79;
+    text-shadow: 0 0 30px #fcd541cc;
+  }
+  .psp-button.triangle {
+    box-shadow:
+      0 12px 10px #737426,
+      inset 0 3px 7px #fce545cc;
+    color: #fcff79;
+  }
 
-  <style>
-    .back-button {
-      display: inline-block;
-      margin: 50px auto 20px;
-      padding: 12px 28px;
-      font-size: 1em;
-      color: #00d9ff;
-      border: 2px solid #00d9ff;
-      border-radius: 30px;
-      text-decoration: none;
-      transition: all 0.3s ease;
+  /* Dpad */
+  .psp-dpad {
+    position: relative;
+    width: 130px;
+    height: 90px;
+    display: grid;
+    grid-template-columns: 40px 42px 40px;
+    grid-template-rows: 40px 10px 40px;
+    align-items: center;
+    justify-items: center;
+    gap: 8px;
+    margin-right: 10px;
+  }
+  .psp-dpad span {
+    font-family: monospace;
+    font-size: 32px;
+    color: #74b2ffcc;
+    filter: drop-shadow(0 0 3px #4a7effaa);
+    user-select: none;
+    cursor: default;
+  }
+  /* Layout adjustments */
+  .content-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+  }
+  .timeline-sidebar {
+    position: relative;
+    flex-shrink: 0;
+  }
+  .timeline-items {
+    position: relative;
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #4660ff66 transparent;
+  }
+
+
+  /* Tooltip for buttons (optional UX) */
+  .timeline-item[aria-label] {
+    position: relative;
+  }
+  .timeline-item[aria-label]:hover::after {
+    content: attr(aria-label);
+    position: absolute;
+    right: 110%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #1f2c71dd;
+    padding: 6px 14px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    color: #add8ffcc;
+    letter-spacing: 0.07em;
+    white-space: nowrap;
+    user-select: none;
+    box-shadow: 0 0 13px #4090ffbb;
+    pointer-events: none;
+    opacity: 0.9;
+  }
+
+  /* Responsive for mobile - hide PSP cards, show simple layout */
+  @media (max-width: 850px) {
+    .psp-device {
+      width: 100vw !important;
+      height: 100vh;
+      border-radius: 0;
+      margin: 0;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
     }
-    .back-button:hover {
-      background-color: #00d9ff;
-      color: #000;
-      box-shadow: 0 0 15px #00d9ff;
+    .content-wrapper {
+      flex-direction: column;
+      height: auto !important;
     }
-  </style>
+    .timeline-sidebar {
+      width: 100%;
+      height: 110px;
+      border-radius: 0 0 24px 24px;
+      border-right: none;
+      border-bottom: 4px solid #3c6affcc;
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 12px 10px;
+      margin-bottom: 0;
+      box-shadow: none;
+    }
+    .timeline-items {
+      flex-direction: row;
+      gap: 14px;
+      margin-left: 0;
+      width: auto;
+      padding: 0;
+      justify-content: flex-start;
+      max-height: none;
+    }
+    .timeline-item {
+      width: 70px !important;
+      height:70px !important;
+      border-radius: 14px;
+      border-left: none !important;
+      box-shadow: 0 0 20px #3a6fff99 inset;
+      padding: 6px 6px;
+      font-size: 0.75rem;
+    }
+    .detail-panel {
+      height: calc(100vh - 180px);
+      padding: 24px 18px;
+      border-radius: 0 0 0 0;
+      margin: 10px 0 0 0;
+      font-size: 1rem;
+    }
+    header h1 {
+      font-size: 2.4rem;
+    }
+  }
+</style>
+<link href="./personagens3_files/all.min.css" rel="stylesheet"/>
+<style>
+  /* PSP controls style */
+  .psp-controls {
+    width: 900px;
+    max-width: 95vw;
+    margin: 0 auto 40px;
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 30px;
+    user-select: none;
+  }
+  .psp-button {
+    width: 48px; height: 48px;
+    background: linear-gradient(145deg, #293a74, #1a2d57);
+    border-radius: 50%;
+    box-shadow:
+      0 12px 10px #0d1454,
+      inset 0 3px 7px #2950a6;
+    cursor: default;
+    transition: background 0.3s ease;
+  }
+  .psp-button:active {
+    background: linear-gradient(145deg, #1a2d57, #293a74);
+  }
+  .psp-button.circle::before {
+    content: "●";
+    position: absolute;
+    top: 11px; left: 50%;
+    transform: translateX(-50%);
+    color: #ef54ff;
+    font-size: 18px;
+    font-weight: 800;
+    text-shadow: 0 0 12px #ff4aff99;
+  }
+  .psp-button.cross::before {
+    content: "✕";
+    font-size: 26px;
+    color: #4aecff;
+    text-shadow: 0 0 20px #45eaffbb;
+    display: block;
+    text-align: center;
+    line-height: 48px;
+  }
+  .psp-button.square::before {
+    content: "■";
+    font-size: 26px;
+    color: #f193ff;
+    text-shadow: 0 0 20px #dc7affaa;
+    display: block;
+    text-align: center;
+    line-height: 48px;
+  }
+  .psp-button.triangle::before {
+    content: "▲";
+    font-size: 26px;
+    color: #fcff79;
+    text-shadow: 0 0 30px #fcd541cc;
+    display: block;
+    text-align: center;
+    line-height: 48px;
+  }
+  .psp-dpad {
+    width: 130px;
+    height: 90px;
+    display: grid;
+    grid-template-columns: 40px 42px 40px;
+    grid-template-rows: 40px 10px 40px;
+    gap: 8px;
+    font-family: monospace;
+    font-size: 28px;
+    color: #74b2ffcc;
+    filter: drop-shadow(0 0 3px #4a7effaa);
+    justify-items: center;
+    align-items: center;
+  }
+</style>
+<script>
+  const introTextEl = document.getElementById('introText');
+  const startButton = document.getElementById('startButton');
+  const introScreen = document.getElementById('introScreen');
+  const dpad = document.querySelector('.psp-dpad');
 
-</body>
-</html>
+  dpad.style.pointerEvents = 'none'; // Bloqueia setas até iniciar
+
+  const introMessages = ["Sistema iniciando...", "Pressione o botão abaixo para iniciar"];
+  let msgIndex = 0;
+  let charIndex = 0;
+
+  function typeMessage() {
+    if (charIndex < introMessages[msgIndex].length) {
+      introTextEl.textContent += introMessages[msgIndex].charAt(charIndex);
+      charIndex++;
+      setTimeout(typeMessage, 50);
+    } else {
+      if (msgIndex === 0) {
+        setTimeout(() => {
+          introTextEl.textContent = '';
+          charIndex = 0;
+          msgIndex = 1;
+          typeMessage();
+        }, 1000);
+      } else {
+        startButton.style.display = 'block';
+      }
+    }
+  }
+
+  startButton.addEventListener('click', () => {
+    introScreen.style.display = 'none';
+    dpad.style.pointerEvents = 'auto';
+  });
+
+  window.addEventListener('DOMContentLoaded', typeMessage);
+
+  // Personagens
+  const characters = [
+    {
+      name: 'Dr. Alan C. Rios',
+      role: 'Líder da pesquisa astronômica',
+      job: 'Astrofísico',
+      age: '46',
+      nation: 'Brasil',
+      message: 'Especialista em cálculos de órbitas e previsões de impacto.',
+      tagline: 'A mente que observa o cosmos.',
+      imagePath: 'img-person/alan-rios.jpg' // Caminho da imagem
+    },
+    {
+      name: 'Dra. Eva Chen',
+      role: 'Engenheira espacial',
+      job: 'Engenheira de Sistemas Orbital',
+      age: '39',
+      nation: 'China',
+      message: 'Cria tecnologias para neutralizar asteroides.',
+      tagline: 'A esperança da humanidade.',
+      imagePath: 'img-person/eva-chen.jpg' // Caminho da imagem
+    },
+    {
+      name: 'Dra. Lúcia Mendes',
+      role: 'Bióloga e ecóloga',
+      job: 'Pesquisadora ambiental',
+      age: '42',
+      nation: 'Brasil',
+      message: 'Analisa os impactos ambientais do colapso global.',
+      tagline: 'Ouça a Terra enquanto ela ainda fala.',
+      imagePath: 'img-person/lucia-mendes.jpg' // Caminho da imagem
+    },
+    {
+      name: 'Presidente Emília Dawson',
+      role: 'Líder mundial',
+      job: 'Presidenta da Aliança Global',
+      age: '53',
+      nation: 'EUA',
+      message: 'Coordena a ação internacional contra a ameaça.',
+      tagline: 'Diplomacia sob pressão.',
+      imagePath: 'img-person/emilia-dawson.jpg' // Caminho da imagem
+    },
+    {
+      name: 'Dr. Silas Vahn',
+      role: 'Magnata da tecnologia',
+      job: 'Empresário e visionário tecnológico',
+      age: '63',
+      nation: 'EUA',
+      message: 'Magnata da tecnologia que propõe soluções comerciais para a crise, guiado por previsões de algoritmos e interesses econômicos.',
+      tagline: 'Cada pedra no céu é uma oportunidade.',
+      imagePath: 'img-person/silas-vahn.jpg' // Caminho da imagem (substitua o caminho da imagem por um adequado)
+    }
+  ];
+
+  let currentIndex = 0;
+
+  function selectItem(index) {
+    currentIndex = index;
+    document.querySelectorAll('.timeline-item').forEach((el, i) => {
+      el.classList.toggle('selected', i === index);
+      el.setAttribute('aria-selected', i === index ? 'true' : 'false');
+      if (i === index) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    // NÃO carrega os detalhes ainda, só muda o visual
+  }
+
+  function loadDetails(index) {
+    const data = characters[index];
+    document.querySelector('.detail-name').textContent = data.name;
+    document.querySelector('.detail-role').textContent = data.role;
+    document.querySelector('.detail-job').textContent = data.job;
+    document.querySelector('.detail-age').textContent = data.age;
+    document.querySelector('.detail-nation').textContent = data.nation;
+    document.querySelector('.detail-message').textContent = data.message;
+    document.querySelector('.tagline').textContent = data.tagline;
+
+    document.querySelector('.character-image').style.backgroundImage = `url('${data.imagePath}')`;
+  }
+
+  document.querySelector('.psp-dpad span:nth-child(1)').addEventListener('click', () => {
+    if (currentIndex > 0) {
+      selectItem(currentIndex - 1);
+    }
+  });
+
+  document.querySelector('.psp-dpad span:nth-child(2)').addEventListener('click', () => {
+    if (currentIndex < characters.length - 1) {
+      selectItem(currentIndex + 1);
+    }
+  });
+
+  document.querySelector('.psp-button.cross').addEventListener('click', () => {
+    if (introScreen.style.display !== "none") {
+      introScreen.style.display = "none";
+      dpad.style.pointerEvents = 'auto';
+    } else {
+      loadDetails(currentIndex); // Agora ✕ serve para confirmar e exibir
+    }
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    selectItem(currentIndex);
+  });
+</script>
+<script>
+document.getElementById('backButton').addEventListener('click', function () {
+  window.location.href = '../index.html';
+});
+</script><script>
+document.getElementById('psp-back').addEventListener('click', function () {
+  window.location.href = '../index.html';
+});
+</script><script>
+document.getElementById('psp-back').addEventListener('click', function () {
+  window.location.href = '../index.html';
+});
+
+document.getElementById('psp-confirm').addEventListener('click', function () {
+  loadDetails(currentIndex);
+});
+</script><script>
+document.getElementById('psp-back').addEventListener('click', function () {
+  window.location.href = '../index.html';
+});
+document.getElementById('psp-confirm').addEventListener('click', function () {
+  loadDetails(currentIndex);
+});
+</script></body></html>
