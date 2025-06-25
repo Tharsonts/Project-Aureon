@@ -27,5 +27,4 @@ Com estética inspirada em painéis militares e centrais espaciais, o objetivo �
 
 - Interface futurista com seções temáticas
 - Simulação de zona de impacto em mapa global
-- Contagem regressiva para evento final
 - Integração de vídeo do filme como base narrativa
